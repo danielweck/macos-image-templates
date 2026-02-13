@@ -14,8 +14,8 @@ variable "vm_name" {
 source "tart-cli" "tart" {
   vm_name      = "${var.vm_name}"
   recovery     = true
-  cpu_count    = 4
-  memory_gb    = 8
+  cpu_count    = 7
+  memory_gb    = 12
   disk_size_gb = 50
   communicator = "none"
   boot_command = [

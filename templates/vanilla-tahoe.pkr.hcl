@@ -14,8 +14,8 @@ packer {
 source "tart-cli" "tart" {
   from_ipsw    = "https://updates.cdn-apple.com/2026WinterFCS/fullrestores/047-60229/6D5DBEA5-75A0-4BEF-ACC9-5ACF9B8DF6B7/UniversalMac_26.3_25D125_Restore.ipsw"
   vm_name      = "tahoe-vanilla"
-  cpu_count    = 4
-  memory_gb    = 8
+  cpu_count    = 7
+  memory_gb    = 12
   disk_size_gb = 50
   ssh_password = "admin"
   ssh_username = "admin"

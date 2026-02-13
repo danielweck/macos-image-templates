@@ -7,10 +7,6 @@ packer {
   }
 }
 
-variable "macos_version" {
-  type = string
-}
-
 variable "xcode_version" {
   type = list(string)
 }
@@ -44,7 +40,7 @@ variable "tag" {
 
 variable "disk_size" {
   type = number
-  default = 120
+  default = 100
 }
 
 variable "disk_free_mb" {
@@ -58,11 +54,11 @@ variable "android_sdk_tools_version" {
 }
 
 source "tart-cli" "tart" {
-  vm_base_name = "ghcr.io/cirruslabs/macos-${var.macos_version}-base:latest"
+  vm_base_name = "tahoe-base"
   // use tag or the last element of the xcode_version list
-  vm_name      = "${var.macos_version}-xcode:${var.tag != "" ? var.tag : var.xcode_version[0]}"
-  cpu_count    = 4
-  memory_gb    = 8
+  vm_name      = "tahoe-xcode:${var.tag != "" ? var.tag : var.xcode_version[0]}"
+  cpu_count    = 7
+  memory_gb    = 12
   disk_size_gb = var.disk_size
   headless     = true
   ssh_password = "admin"
@@ -83,7 +79,7 @@ locals {
         "APP_DIR=$(dirname $CONTENTS_DIR)",
         "sudo mv $APP_DIR /Applications/Xcode_${version}.app",
         "sudo xcode-select -s /Applications/Xcode_${version}.app",
-        "xcodebuild -downloadPlatform iOS",
+// "xcodebuild -downloadPlatform iOS",
         "xcodebuild -runFirstLaunch",
         "df -h",
       ]
@@ -91,6 +87,9 @@ locals {
   ]
 }
 
+// "brew install codex",
+// "brew install --cask claude-code",
+// "brew install --cask amazon-q"
 build {
   sources = ["source.tart-cli.tart"]
 
@@ -100,42 +99,39 @@ build {
       "brew --version",
       "brew update",
       "brew upgrade",
-      "brew install codex",
-      "brew install --cask claude-code",
-      "brew install --cask amazon-q"
     ]
   }
 
-  // Re-install the GitHub Actions runner
-  provisioner "shell" {
-    script = "scripts/install-actions-runner.sh"
-  }
+// // Re-install the GitHub Actions runner
+// provisioner "shell" {
+// script = "scripts/install-actions-runner.sh"
+// }
 
-  // make sure our workaround from base is still valid
-  provisioner "shell" {
-    inline = [
-      "sudo ln -s /Users/admin /Users/runner || true"
-    ]
-  }
+// // make sure our workaround from base is still valid
+// provisioner "shell" {
+// inline = [
+// "sudo ln -s /Users/admin /Users/runner || true"
+// ]
+// }
 
-  provisioner "shell" {
-    inline = [
-      "source ~/.zprofile",
-      "brew install openjdk@17",
-      "echo 'export PATH=\"/opt/homebrew/opt/openjdk@17/bin:$PATH\"' >> ~/.zprofile",
-      "echo 'export ANDROID_HOME=$HOME/android-sdk' >> ~/.zprofile",
-      "echo 'export ANDROID_SDK_ROOT=$ANDROID_HOME' >> ~/.zprofile",
-      "echo 'export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator' >> ~/.zprofile",
-      "source ~/.zprofile",
-      "wget -q https://dl.google.com/android/repository/commandlinetools-mac-${var.android_sdk_tools_version}_latest.zip -O android-sdk-tools.zip",
-      "mkdir -p $ANDROID_HOME/cmdline-tools/",
-      "unzip -q android-sdk-tools.zip -d $ANDROID_HOME/cmdline-tools/",
-      "rm android-sdk-tools.zip",
-      "mv $ANDROID_HOME/cmdline-tools/cmdline-tools $ANDROID_HOME/cmdline-tools/latest",
-      "yes | sdkmanager --licenses",
-      "yes | sdkmanager 'platform-tools' 'platforms;android-35' 'build-tools;35.0.0' 'ndk;27.2.12479018'"
-    ]
-  }
+// provisioner "shell" {
+// inline = [
+// "source ~/.zprofile",
+// "brew install openjdk@17",
+// "echo 'export PATH=\"/opt/homebrew/opt/openjdk@17/bin:$PATH\"' >> ~/.zprofile",
+// "echo 'export ANDROID_HOME=$HOME/android-sdk' >> ~/.zprofile",
+// "echo 'export ANDROID_SDK_ROOT=$ANDROID_HOME' >> ~/.zprofile",
+// "echo 'export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator' >> ~/.zprofile",
+// "source ~/.zprofile",
+// "wget -q https://dl.google.com/android/repository/commandlinetools-mac-${var.android_sdk_tools_version}_latest.zip -O android-sdk-tools.zip",
+// "mkdir -p $ANDROID_HOME/cmdline-tools/",
+// "unzip -q android-sdk-tools.zip -d $ANDROID_HOME/cmdline-tools/",
+// "rm android-sdk-tools.zip",
+// "mv $ANDROID_HOME/cmdline-tools/cmdline-tools $ANDROID_HOME/cmdline-tools/latest",
+// "yes | sdkmanager --licenses",
+// "yes | sdkmanager 'platform-tools' 'platforms;android-35' 'build-tools;35.0.0' 'ndk;27.2.12479018'"
+// ]
+// }
 
   provisioner "shell" {
     inline = [
@@ -146,7 +142,7 @@ build {
   }
 
   provisioner "file" {
-    sources      = [ for version in var.xcode_version : pathexpand("~/XcodesCache/Xcode_${version}.xip")]
+    sources      = [ for version in var.xcode_version : pathexpand("~/Downloads/Xcode_${version}.xip")]
     destination = "/Users/admin/Downloads/"
   }
 
@@ -167,37 +163,37 @@ build {
     }
   }
 
-  dynamic "provisioner" {
-    for_each = length(var.xcode_version) > 2 ? [2] : []
-    labels = ["shell"]
-    content {
-      inline = [
-        "source ~/.zprofile",
-        "sudo xcodes select '${var.xcode_version[2]}'",
-        "xcodebuild -downloadAllPlatforms",
-      ]
-    }
-  }
+// dynamic "provisioner" {
+// for_each = length(var.xcode_version) > 2 ? [2] : []
+// labels = ["shell"]
+// content {
+// inline = [
+// "source ~/.zprofile",
+// "sudo xcodes select '${var.xcode_version[2]}'",
+// "xcodebuild -downloadAllPlatforms",
+// ]
+// }
+// }
 
-  dynamic "provisioner" {
-    for_each = length(var.xcode_version) > 1 ? [1] : []
-    labels = ["shell"]
-    content {
-      inline = [
-        "source ~/.zprofile",
-        "sudo xcodes select '${var.xcode_version[1]}'",
-        "xcodebuild -downloadAllPlatforms",
-      ]
-    }
-  }
+// dynamic "provisioner" {
+// for_each = length(var.xcode_version) > 1 ? [1] : []
+// labels = ["shell"]
+// content {
+// inline = [
+// "source ~/.zprofile",
+// "sudo xcodes select '${var.xcode_version[1]}'",
+// "xcodebuild -downloadAllPlatforms",
+// ]
+// }
+// }
 
-  provisioner "shell" {
-    inline = [
-      "source ~/.zprofile",
-      "sudo xcodes select '${var.xcode_version[0]}'",
-      "xcodebuild -downloadAllPlatforms",
-    ]
-  }
+// provisioner "shell" {
+// inline = [
+// "source ~/.zprofile",
+// "sudo xcodes select '${var.xcode_version[0]}'",
+// "xcodebuild -downloadAllPlatforms",
+// ]
+// }
 
   provisioner "shell" {
     inline = concat(
@@ -226,23 +222,23 @@ build {
     )
   }
 
-  provisioner "shell" {
-    inline = [
-      "source ~/.zprofile",
-      "brew install libimobiledevice ideviceinstaller ios-deploy carthage",
-      "brew install xcbeautify swiftformat swiftlint swiftgen licenseplist",
-      "brew install mint",
-      "brew tap tuist/tuist",
-      "brew install --formula tuist",
-      "rbenv install 3.3.10",
-      "rbenv global 3.3.10", # fastlane conflicts with 3.4.0+ https://github.com/fastlane/fastlane/issues/29527
-      "gem update",
-      "gem install fastlane",
-      "gem install cocoapods",
-      "gem install xcpretty",
-      "gem uninstall --ignore-dependencies ffi && gem install ffi -- --enable-libffi-alloc"
-    ]
-  }
+// provisioner "shell" {
+// inline = [
+// "source ~/.zprofile",
+// "brew install libimobiledevice ideviceinstaller ios-deploy carthage",
+// "brew install xcbeautify swiftformat swiftlint swiftgen licenseplist",
+// "brew install mint",
+// "brew tap tuist/tuist",
+// "brew install --formula tuist",
+// "rbenv install 3.3.10",
+// "rbenv global 3.3.10", # fastlane conflicts with 3.4.0+ https://github.com/fastlane/fastlane/issues/29527
+// "gem update",
+// "gem install fastlane",
+// "gem install cocoapods",
+// "gem install xcpretty",
+// "gem uninstall --ignore-dependencies ffi && gem install ffi -- --enable-libffi-alloc"
+// ]
+// }
 
   // Copy expected runtimes file if provided
   dynamic "provisioner" {
@@ -268,51 +264,51 @@ build {
     }
   }
 
-  provisioner "shell" {
-    inline = [
-      "source ~/.zprofile",
-      "echo 'export FLUTTER_HOME=$HOME/flutter' >> ~/.zprofile",
-      "echo 'export PATH=$HOME/flutter:$HOME/flutter/bin/:$HOME/flutter/bin/cache/dart-sdk/bin:$PATH' >> ~/.zprofile",
-      "source ~/.zprofile",
-      "git clone https://github.com/flutter/flutter.git $FLUTTER_HOME",
-      "cd $FLUTTER_HOME",
-      "git checkout stable",
-      "flutter doctor --android-licenses",
-      "flutter doctor",
-      "flutter precache",
-    ]
-  }
+// provisioner "shell" {
+// inline = [
+// "source ~/.zprofile",
+// "echo 'export FLUTTER_HOME=$HOME/flutter' >> ~/.zprofile",
+// "echo 'export PATH=$HOME/flutter:$HOME/flutter/bin/:$HOME/flutter/bin/cache/dart-sdk/bin:$PATH' >> ~/.zprofile",
+// "source ~/.zprofile",
+// "git clone https://github.com/flutter/flutter.git $FLUTTER_HOME",
+// "cd $FLUTTER_HOME",
+// "git checkout stable",
+// "flutter doctor --android-licenses",
+// "flutter doctor",
+// "flutter precache",
+// ]
+// }
 
   # useful utils for mobile development
-  provisioner "shell" {
-    inline = [
-      "source ~/.zprofile",
-      "brew install graphicsmagick imagemagick",
-      "brew install wix/brew/applesimutils",
-      "brew install gnupg"
-    ]
-  }
+// provisioner "shell" {
+// inline = [
+// "source ~/.zprofile",
+// "brew install graphicsmagick imagemagick",
+// "brew install wix/brew/applesimutils",
+// "brew install gnupg"
+// ]
+// }
 
   # inspired by https://github.com/actions/runner-images/blob/fb3b6fd69957772c1596848e2daaec69eabca1bb/images/macos/provision/configuration/configure-machine.sh#L33-L61
-  provisioner "shell" {
-    inline = [
-      "source ~/.zprofile",
-      "curl -o AppleWWDRCAG3.cer https://www.apple.com/certificateauthority/AppleWWDRCAG3.cer",
-      "curl -o DeveloperIDG2CA.cer https://www.apple.com/certificateauthority/DeveloperIDG2CA.cer",
-      "curl -o add-certificate.swift https://raw.githubusercontent.com/actions/runner-images/fb3b6fd69957772c1596848e2daaec69eabca1bb/images/macos/provision/configuration/add-certificate.swift",
-      "swiftc -suppress-warnings add-certificate.swift",
-      "sudo ./add-certificate AppleWWDRCAG3.cer",
-      "sudo ./add-certificate DeveloperIDG2CA.cer",
-      "rm add-certificate* *.cer"
-    ]
-  }
+// provisioner "shell" {
+// inline = [
+// "source ~/.zprofile",
+// "curl -o AppleWWDRCAG3.cer https://www.apple.com/certificateauthority/AppleWWDRCAG3.cer",
+// "curl -o DeveloperIDG2CA.cer https://www.apple.com/certificateauthority/DeveloperIDG2CA.cer",
+// "curl -o add-certificate.swift https://raw.githubusercontent.com/actions/runner-images/fb3b6fd69957772c1596848e2daaec69eabca1bb/images/macos/provision/configuration/add-certificate.swift",
+// "swiftc -suppress-warnings add-certificate.swift",
+// "sudo ./add-certificate AppleWWDRCAG3.cer",
+// "sudo ./add-certificate DeveloperIDG2CA.cer",
+// "rm add-certificate* *.cer"
+// ]
+// }
 
-  provisioner "shell" {
-    inline = [
-      "source ~/.zprofile",
-      "flutter doctor"
-    ]
-  }
+// provisioner "shell" {
+// inline = [
+// "source ~/.zprofile",
+// "flutter doctor"
+// ]
+// }
 
   // check there is at least 15GB of free space and fail if not
   provisioner "shell" {
@@ -325,12 +321,12 @@ build {
   }
 
   // some other health checks
-  provisioner "shell" {
-    inline = [
-      "source ~/.zprofile",
-      "test -d /Users/runner"
-    ]
-  }
+// provisioner "shell" {
+// inline = [
+// "source ~/.zprofile",
+// "test -d /Users/runner"
+// ]
+// }
 
   # Disable apsd[1][2] daemon as it causes high CPU usage after boot
   #
@@ -360,32 +356,32 @@ build {
   #
   # [1]: https://github.com/actions/runner-images/blob/6bbddd20d76d61606bea5a0133c950cc44c370d3/images/macos/scripts/build/configure-machine.sh#L96
   # [2]: https://github.com/actions/runner-images/discussions/7607
-  provisioner "shell" {
-    inline = [
-      "sudo chown admin /usr/local/bin"
-    ]
-  }
+// provisioner "shell" {
+// inline = [
+// "sudo chown admin /usr/local/bin"
+// ]
+// }
 
   // Install setup-info-generator
-  provisioner "shell" {
-    inline = [
-      "source ~/.zprofile",
-      "brew install cirruslabs/cli/setup-info-generator"
-    ]
-  }
+// provisioner "shell" {
+// inline = [
+// "source ~/.zprofile",
+// "brew install cirruslabs/cli/setup-info-generator"
+// ]
+// }
 
   // Copy setup info template
-  provisioner "file" {
-    source      = "data/setup-info-template.json"
-    destination = "~/setup-info-template.json"
-  }
+// provisioner "file" {
+// source      = "data/setup-info-template.json"
+// destination = "~/setup-info-template.json"
+// }
 
   // Generate setup info
-  provisioner "shell" {
-    inline = [
-      "source ~/.zprofile",
-      "cat ~/setup-info-template.json | setup-info-generator > ~/actions-runner/.setup_info",
-      "rm ~/setup-info-template.json"
-    ]
-  }
+// provisioner "shell" {
+// inline = [
+// "source ~/.zprofile",
+// "cat ~/setup-info-template.json | setup-info-generator > ~/actions-runner/.setup_info",
+// "rm ~/setup-info-template.json"
+// ]
+// }
 }

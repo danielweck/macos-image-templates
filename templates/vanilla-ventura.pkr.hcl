@@ -16,8 +16,8 @@ source "tart-cli" "tart" {
   # and https://www.theiphonewiki.com/wiki/Beta_Firmware/Mac/13.x
   from_ipsw    = "https://updates.cdn-apple.com/2023FallFCS/fullrestores/042-55833/C0830847-A2F8-458F-B680-967991820931/UniversalMac_13.6_22G120_Restore.ipsw"
   vm_name      = "ventura-vanilla"
-  cpu_count    = 4
-  memory_gb    = 8
+  cpu_count    = 7
+  memory_gb    = 12
   disk_size_gb = 50
   ssh_password = "admin"
   ssh_username = "admin"

@@ -15,8 +15,8 @@ source "tart-cli" "tart" {
   # You can find macOS IPSW URLs on various websites like https://ipsw.me/
   from_ipsw    = "https://updates.cdn-apple.com/2022FallFCS/fullrestores/012-66032/8D8D90C6-A876-4FFF-BBF4-D158939B3841/UniversalMac_12.6.1_21G217_Restore.ipsw"
   vm_name      = "monterey-vanilla"
-  cpu_count    = 4
-  memory_gb    = 8
+  cpu_count    = 7
+  memory_gb    = 12
   disk_size_gb = 50
   ssh_password = "admin"
   ssh_username = "admin"

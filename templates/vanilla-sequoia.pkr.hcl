@@ -15,8 +15,8 @@ source "tart-cli" "tart" {
   // will be update to 15.7.2
   from_ipsw    = "https://updates.cdn-apple.com/2025SummerFCS/fullrestores/093-10809/CFD6DD38-DAF0-40DA-854F-31AAD1294C6F/UniversalMac_15.6.1_24G90_Restore.ipsw"
   vm_name      = "sequoia-vanilla"
-  cpu_count    = 4
-  memory_gb    = 8
+  cpu_count    = 7
+  memory_gb    = 12
   disk_size_gb = 50
   ssh_password = "admin"
   ssh_username = "admin"

@@ -1,3 +1,19 @@
+Assuming TART is already installed, and `~/Xcode_26.2.xip` exists (from https://developer.apple.com/download/all/ )
+
+* `brew tap hashicorp/tap`
+* `brew install hashicorp/tap/packer`
+* `packer --version`
+* `git clone https://github.com/danielweck/macos-image-templates.git tart-macos-image-templates_DANIELWECK`
+* `cd tart-macos-image-templates_DANIELWECK/`
+* `packer init templates/vanilla-tahoe.pkr.hcl`
+* `packer build templates/vanilla-tahoe.pkr.hcl`
+* `tart list`
+* `packer init templates/base.pkr.hcl`
+* `packer build templates/base.pkr.hcl`
+* `tart list`
+* `packer init templates/xcode.pkr.hcl`
+* `packer build -var xcode_version="[\"26.2\"]" -var xcode_components="[\"MetalToolchain\"]"  templates/xcode.pkr.hcl`
+
 ## macOS Packer Templates for Tart
 
 Repository with Packer templates to build macOS [Tart](https://tart.run/) virtual machines to use with [Cirrus Runners](https://cirrus-runners.app/),
