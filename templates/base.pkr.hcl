@@ -7,9 +7,9 @@ packer {
   }
 }
 
-// variable "vm_name" {
-//   type = string
-// }
+variable "vm_name" {
+  type = string
+}
 
 source "tart-cli" "tart" {
   vm_name      = "${var.vm_name}"
@@ -58,17 +58,17 @@ build {
     ]
   }
 
-  // "brew install wget unzip zip ca-certificates cmake gcc git-lfs jq yq gh gitlab-runner",
-  // "brew install buildkite/buildkite/buildkite-agent",
-  // "brew install equinix-labs/otel-cli/otel-cli",
-  // "brew install curl || true", // doesn't work on Monterey
-  // "brew install --cask git-credential-manager",
-  // "git lfs install",
   provisioner "shell" {
     inline = [
       "source ~/.zprofile",
       "brew --version",
       "brew update",
+//      "brew install wget unzip zip ca-certificates cmake gcc git-lfs jq yq gh gitlab-runner",
+//      "brew install buildkite/buildkite/buildkite-agent",
+//      "brew install equinix-labs/otel-cli/otel-cli",
+//      "brew install curl || true", // doesn't work on Monterey
+//      "brew install --cask git-credential-manager",
+//      "git lfs install",
       "sudo softwareupdate --install-rosetta --agree-to-license"
     ]
   }
