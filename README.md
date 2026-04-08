@@ -17,8 +17,11 @@ Assuming TART is already installed, and `~/Downloads/Xcode_26.4.xip` exists (fro
 * `packer init templates/base.pkr.hcl`
 * `packer build -var vm_name="tahoe-base" templates/base.pkr.hcl`
 * `tart list`
+* `packer init "templates/enable-sip-with-username.pkr.hcl"`
+* `packer build -var vm_name="tahoe-base" "templates/enable-sip-with-username.pkr.hcl"`
+* `tart list`
 * `packer init templates/xcode.pkr.hcl`
-* `packer build -var xcode_version="[\"26.4\"]" -var xcode_components="[\"MetalToolchain\"]" templates/xcode.pkr.hcl`
+* `packer build -var xcode_version="[\"26.4\"]" -var xcode_components="[]" templates/xcode.pkr.hcl` # \"MetalToolchain\"
 
 ## macOS Packer Templates for Tart
 
