@@ -7,13 +7,12 @@ packer {
   }
 }
 
-// variable "macos_version" {
-// type = string
+// variable "vm_name" {
+//   type = string
 // }
 
 source "tart-cli" "tart" {
-  vm_base_name = "tahoe-vanilla"
-  vm_name      = "tahoe-base"
+  vm_name      = "${var.vm_name}"
   cpu_count    = 7
   memory_gb    = 12
   disk_size_gb = 50
@@ -177,5 +176,10 @@ build {
       "sudo chown root:wheel /Library/LaunchAgents/org.cirruslabs.tart-guest-agent.plist",
       "sudo chmod 0644 /Library/LaunchAgents/org.cirruslabs.tart-guest-agent.plist",
     ]
+  }
+
+  # Update TCC.db and allow automation tools
+  provisioner "shell" {
+    script = "scripts/update-tcc-database.sh"
   }
 }

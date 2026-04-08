@@ -1,4 +1,4 @@
-Assuming TART is already installed, and `~/Xcode_26.2.xip` exists (from https://developer.apple.com/download/all/ )
+Assuming TART is already installed, and `~/Xcode_26.4.xip` exists (from https://developer.apple.com/download/all/ )
 
 * `brew tap hashicorp/tap`
 * `brew install hashicorp/tap/packer`
@@ -12,7 +12,7 @@ Assuming TART is already installed, and `~/Xcode_26.2.xip` exists (from https://
 * `packer build templates/base.pkr.hcl`
 * `tart list`
 * `packer init templates/xcode.pkr.hcl`
-* `packer build -var xcode_version="[\"26.2\"]" -var xcode_components="[\"MetalToolchain\"]"  templates/xcode.pkr.hcl`
+* `packer build -var xcode_version="[\"26.4\"]" -var xcode_components="[\"MetalToolchain\"]" templates/xcode.pkr.hcl`
 
 ## macOS Packer Templates for Tart
 
