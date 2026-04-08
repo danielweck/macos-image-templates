@@ -6,7 +6,7 @@ Assuming TART is already installed, and `~/Downloads/Xcode_26.4.xip` exists (fro
 * `git clone https://github.com/danielweck/macos-image-templates.git tart-macos-image-templates_DANIELWECK`
 * `cd tart-macos-image-templates_DANIELWECK/`
 * `packer init templates/vanilla-tahoe.pkr.hcl`
-* `packer build -var vm_name="\"tahoe\"" templates/vanilla-tahoe.pkr.hcl`
+* `packer build templates/vanilla-tahoe.pkr.hcl`
 * `tart list`
 * `packer init templates/base.pkr.hcl`
 * `packer build -var vm_name="\"tahoe\"" templates/base.pkr.hcl`
