@@ -1,4 +1,4 @@
-Assuming TART is already installed, and `~/Xcode_26.4_Apple_silicon.xip` exists (from https://developer.apple.com/download/all/ )
+Assuming TART is already installed, and `~/Downloads/Xcode_26.4.xip` exists (from https://developer.apple.com/download/all/ )
 
 * `brew tap hashicorp/tap`
 * `brew install hashicorp/tap/packer`

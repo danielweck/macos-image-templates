@@ -7,6 +7,10 @@ packer {
   }
 }
 
+//variable "macos_version" {
+//  type = string
+//}
+
 variable "xcode_version" {
   type = list(string)
 }
@@ -87,9 +91,6 @@ locals {
   ]
 }
 
-// "brew install codex",
-// "brew install --cask claude-code",
-// "brew install --cask amazon-q"
 build {
   sources = ["source.tart-cli.tart"]
 
@@ -99,20 +100,23 @@ build {
       "brew --version",
       "brew update",
       "brew upgrade",
+//      "brew install codex",
+//      "brew install --cask claude-code",
+//      "brew install --cask amazon-q"
     ]
   }
 
-// // Re-install the GitHub Actions runner
-// provisioner "shell" {
-// script = "scripts/install-actions-runner.sh"
-// }
+//  // Re-install the GitHub Actions runner
+//  provisioner "shell" {
+//    script = "scripts/install-actions-runner.sh"
+//  }
 
-// // make sure our workaround from base is still valid
-// provisioner "shell" {
-// inline = [
-// "sudo ln -s /Users/admin /Users/runner || true"
-// ]
-// }
+//  // make sure our workaround from base is still valid
+//  provisioner "shell" {
+//    inline = [
+//      "sudo ln -s /Users/admin /Users/runner || true"
+//    ]
+//  }
 
 //  provisioner "shell" {
 //    inline = [
