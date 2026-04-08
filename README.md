@@ -2,17 +2,23 @@ Assuming TART is already installed, and `~/Downloads/Xcode_26.4.xip` exists (fro
 
 * `brew tap hashicorp/tap`
 * `brew install hashicorp/tap/packer`
-* `packer --version`
 * `git clone https://github.com/danielweck/macos-image-templates.git tart-macos-image-templates_DANIELWECK`
 * `cd tart-macos-image-templates_DANIELWECK/`
+* `packer --version`
+* `tart list`
 * `packer init templates/vanilla-tahoe.pkr.hcl`
 * `packer build templates/vanilla-tahoe.pkr.hcl`
 * `tart list`
+* `tart clone tahoe-vanilla tahoe-base`
+* `tart list`
+* `packer init "templates/disable-sip-with-username.pkr.hcl"`
+* `packer build -var vm_name="tahoe-base" "templates/disable-sip-with-username.pkr.hcl"`
+* `tart list`
 * `packer init templates/base.pkr.hcl`
-* `packer build -var vm_name="tahoe-vanilla" templates/base.pkr.hcl`
+* `packer build -var vm_name="tahoe-base" templates/base.pkr.hcl`
 * `tart list`
 * `packer init templates/xcode.pkr.hcl`
-* `packer build -var vm_name="tahoe-base" xcode_version="[\"26.4\"]" -var xcode_components="[\"MetalToolchain\"]" templates/xcode.pkr.hcl`
+* `packer build -var vm_name="tahoe-xcode" xcode_version="[\"26.4\"]" -var xcode_components="[\"MetalToolchain\"]" templates/xcode.pkr.hcl`
 
 ## macOS Packer Templates for Tart
 

@@ -44,6 +44,7 @@ build {
   provisioner "shell" {
     inline = [
       "touch ~/.zprofile",
+      "rm -f ~/.profile",
       "ln -s ~/.zprofile ~/.profile",
     ]
   }
