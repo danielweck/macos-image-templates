@@ -355,6 +355,17 @@ build {
     ]
   }
 
+// TODO re-enable Gatekeeper?
+// sudo spctl --global-enable
+// System Settings ----> Privacy & Security
+// "spctl --status | grep -q 'assessments disabled'"
+  provisioner "shell" {
+    inline = [
+      // Disable passwordless sudo
+      "echo admin | sudo -S sh -c \"mkdir -p /etc/sudoers.d/; (rm -f /etc/sudoers.d/admin-nopasswd || true) ; echo '### admin ALL=(ALL) NOPASSWD: ALL' | EDITOR=tee visudo /etc/sudoers.d/admin-nopasswd\"",
+    ]
+  }
+
   # Compatibility with GitHub Actions Runner Images, where
   # /usr/local/bin belongs to the default user. Also see [2].
   #
