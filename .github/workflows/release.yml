@@ -89,6 +89,8 @@ jobs:
 
   release-runner:
     name: Update Runner Image (${{ matrix.macos_version }})
+    # Keep runner refreshes independent from the release-xcode matrix so one
+    # Xcode image failure does not skip the runner matrix.
     runs-on: [self-hosted, macOS, ARM64]
     timeout-minutes: 180
     strategy:
