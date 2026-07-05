@@ -89,7 +89,6 @@ jobs:
 
   release-runner:
     name: Update Runner Image (${{ matrix.macos_version }})
-    needs: release-xcode
     runs-on: [self-hosted, macOS, ARM64]
     timeout-minutes: 180
     strategy:
