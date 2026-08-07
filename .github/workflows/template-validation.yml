@@ -185,7 +185,7 @@ jobs:
           git diff --name-only "$BASE_SHA" "$HEAD_SHA" > changed-files.txt
 
           build=false
-          if grep -Eq '^(templates/base\.pkr\.hcl|templates/disable-sip.*\.pkr\.hcl|data/(github_known_hosts|limit\.maxfiles\.plist|setup-info-template\.json|tart-guest-.*\.plist)|scripts/install-actions-runner\.sh|ansible/)' changed-files.txt; then
+          if grep -Eq '^(templates/base\.pkr\.hcl|templates/disable-sip.*\.pkr\.hcl|data/(github_known_hosts|limit\.maxfiles\.plist|setup-info-template\.json|tart-guest-.*\.plist)|scripts/(install-actions-runner|update-tcc-database)\.sh|ansible/)' changed-files.txt; then
             build=true
           fi
 
