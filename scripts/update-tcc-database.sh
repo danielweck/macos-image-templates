@@ -36,7 +36,15 @@ update_tcc_database() {
 	('kTCCServiceScreenCapture', 1, '/usr/bin/osascript', 2, 0, 1, NULL, 'UNUSED'),
 	('kTCCServicePostEvent', 1, '/usr/bin/osascript', 2, 0, 1, NULL, 'UNUSED'),
 	('kTCCServiceAppleEvents', 1, '/usr/bin/osascript', 2, 0, 1, 0, 'com.apple.systemevents'),
-	('kTCCServiceAppleEvents', 1, '/usr/bin/osascript', 2, 0, 1, 0, 'com.apple.Safari');
+	('kTCCServiceAppleEvents', 1, '/usr/bin/osascript', 2, 0, 1, 0, 'com.apple.Safari'),
+	-- Direct Python invocation
+	('kTCCServiceAccessibility', 0, 'org.python.python', 2, 0, 1, NULL, 'UNUSED'),
+	('kTCCServiceScreenCapture', 0, 'org.python.python', 2, 0, 1, NULL, 'UNUSED'),
+	('kTCCServicePostEvent', 0, 'org.python.python', 2, 0, 1, NULL, 'UNUSED'),
+	-- Commands invoked through the Tart Guest Agent
+	('kTCCServiceAccessibility', 1, '/opt/homebrew/bin/tart-guest-agent', 2, 0, 1, NULL, 'UNUSED'),
+	('kTCCServiceScreenCapture', 1, '/opt/homebrew/bin/tart-guest-agent', 2, 0, 1, NULL, 'UNUSED'),
+	('kTCCServicePostEvent', 1, '/opt/homebrew/bin/tart-guest-agent', 2, 0, 1, NULL, 'UNUSED');
 	EOF
 }
 

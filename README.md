@@ -1,10 +1,13 @@
-Assuming TART is already installed, and `~/Downloads/Xcode_26.4.xip` exists (from https://developer.apple.com/download/all/ )
+Assuming TART is already installed, and `~/Downloads/Xcode_26.6_Universal.xip` exists (from https://developer.apple.com/download/all/ )
 
+* `brew update`
+* `brew upgrade`
 * `brew tap hashicorp/tap`
+* `brew trust hashicorp/tap`
 * `brew install hashicorp/tap/packer`
+* `packer --version` (... if/when out-of-date (see https://github.com/hashicorp/homebrew-tap/issues/365 ), `brew uninstall hashicorp/tap/packer` + `brew untap hashicorp/tap` and manual install from https://developer.hashicorp.com/packer/install or https://www.packer.io/downloads )
 * `git clone https://github.com/danielweck/macos-image-templates.git tart-macos-image-templates_DANIELWECK`
 * `cd tart-macos-image-templates_DANIELWECK/`
-* `packer --version`
 * `tart list`
 * `packer init templates/vanilla-tahoe.pkr.hcl`
 * `packer build templates/vanilla-tahoe.pkr.hcl`
@@ -21,7 +24,7 @@ Assuming TART is already installed, and `~/Downloads/Xcode_26.4.xip` exists (fro
 * `packer build -var vm_name="tahoe-base" "templates/enable-sip-with-username.pkr.hcl"`
 * `tart list`
 * `packer init templates/xcode.pkr.hcl`
-* `packer build -var xcode_version="[\"26.4\"]" -var xcode_components="[]" templates/xcode.pkr.hcl`
+* `packer build -var xcode_version="[\"26.6\"]" -var xcode_components="[]" templates/xcode.pkr.hcl`
 
 `xcode_components` = `\"MetalToolchain\"`
 ==>
@@ -31,8 +34,8 @@ Assuming TART is already installed, and `~/Downloads/Xcode_26.4.xip` exists (fro
 
 ## macOS Packer Templates for Tart
 
-Repository with Packer templates to build macOS [Tart](https://tart.run/) virtual machines to use with [Cirrus Runners](https://cirrus-runners.app/),
-[Cirrus CI](https://cirrus-ci.org/guide/macOS/) or [any other automation](https://tart.run/integrations/cirrus-cli/).
+Repository with Packer templates to build macOS [Tart](https://tart.run/) virtual machines to use with self-hosted
+GitHub Actions runners, [Cirrus Runners](https://cirrus-runners.app/) or [any other automation](https://tart.run/integrations/cirrus-cli/).
 
 The following image variants are currently available:
 
@@ -53,4 +56,4 @@ Please watch this repository releases to get notified about new images.
 
 Some of the images are regularly getting rebuild in order to update the pre-installed packages. 
 
-[This configuration file](.ci/cirrus.release.yml) defines images that are getting rebuilt monthly on the first Saturday of the month.
+[This workflow](.github/workflows/monthly.yml) defines images that are getting rebuilt monthly on the first Saturday of the month.

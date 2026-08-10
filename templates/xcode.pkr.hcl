@@ -16,39 +16,39 @@ variable "xcode_version" {
 }
 
 variable "additional_ios_builds" {
-  type = list(string)
+  type    = list(string)
   default = []
 }
 
 variable "additional_tvos_builds" {
-  type = list(string)
+  type    = list(string)
   default = []
 }
 
 variable "xcode_components" {
-  type    = list(string)
-  default = []
+  type        = list(string)
+  default     = []
   description = "Additional Xcode components to download."
 }
 
 variable "expected_runtimes_file" {
-  type    = string
-  default = ""
+  type        = string
+  default     = ""
   description = "Path to file containing expected simulator runtimes. If empty, runtime verification is skipped."
 }
 
 variable "tag" {
-  type = string
+  type    = string
   default = ""
 }
 
 variable "disk_size" {
-  type = number
+  type    = number
   default = 100
 }
 
 variable "disk_free_mb" {
-  type = number
+  type    = number
   default = 15000
 }
 
@@ -146,7 +146,7 @@ build {
   }
 
   provisioner "file" {
-    sources      = [ for version in var.xcode_version : pathexpand("~/Downloads/Xcode_${version}.xip")]
+    sources     = [for version in var.xcode_version : pathexpand("~/Downloads/Xcode_${version}_Universal.xip")]
     destination = "/Users/admin/Downloads/"
   }
 
@@ -161,43 +161,43 @@ build {
   // select the latest one as the default
   dynamic "provisioner" {
     for_each = local.xcode_install_provisioners
-    labels = ["shell"]
+    labels   = ["shell"]
     content {
       inline = provisioner.value.inline
     }
   }
 
-// dynamic "provisioner" {
-// for_each = length(var.xcode_version) > 2 ? [2] : []
-// labels = ["shell"]
-// content {
-// inline = [
-// "source ~/.zprofile",
-// "sudo xcodes select '${var.xcode_version[2]}'",
-// "xcodebuild -downloadAllPlatforms",
-// ]
-// }
-// }
+//  dynamic "provisioner" {
+//    for_each = length(var.xcode_version) > 2 ? [2] : []
+//    labels   = ["shell"]
+//    content {
+//      inline = [
+//        "source ~/.zprofile",
+//        "sudo xcode-select -s /Applications/Xcode_${var.xcode_version[2]}.app/Contents/Developer",
+//        "xcodebuild -downloadAllPlatforms",
+//      ]
+//    }
+//  }
 
-// dynamic "provisioner" {
-// for_each = length(var.xcode_version) > 1 ? [1] : []
-// labels = ["shell"]
-// content {
-// inline = [
-// "source ~/.zprofile",
-// "sudo xcodes select '${var.xcode_version[1]}'",
-// "xcodebuild -downloadAllPlatforms",
-// ]
-// }
-// }
+//  dynamic "provisioner" {
+//    for_each = length(var.xcode_version) > 1 ? [1] : []
+//    labels   = ["shell"]
+//    content {
+//      inline = [
+//        "source ~/.zprofile",
+//        "sudo xcode-select -s /Applications/Xcode_${var.xcode_version[1]}.app/Contents/Developer",
+//        "xcodebuild -downloadAllPlatforms",
+//      ]
+//    }
+//  }
 
-// provisioner "shell" {
-// inline = [
-// "source ~/.zprofile",
-// "sudo xcodes select '${var.xcode_version[0]}'",
-// "xcodebuild -downloadAllPlatforms",
-// ]
-// }
+//  provisioner "shell" {
+//    inline = [
+//      "source ~/.zprofile",
+//      "sudo xcode-select -s /Applications/Xcode_${var.xcode_version[0]}.app/Contents/Developer",
+//      "xcodebuild -downloadAllPlatforms",
+//    ]
+//  }
 
   provisioner "shell" {
     inline = concat(
@@ -226,28 +226,27 @@ build {
     )
   }
 
-// provisioner "shell" {
-// inline = [
-// "source ~/.zprofile",
-// "brew install libimobiledevice ideviceinstaller ios-deploy carthage",
-// "brew install xcbeautify swiftformat swiftlint swiftgen licenseplist",
-// "brew install mint",
-// "brew tap tuist/tuist",
-// "brew install --formula tuist",
-// "rbenv install 3.3.10",
-// "rbenv global 3.3.10", # fastlane conflicts with 3.4.0+ https://github.com/fastlane/fastlane/issues/29527
-// "gem update",
-// "gem install fastlane",
-// "gem install cocoapods",
-// "gem install xcpretty",
-// "gem uninstall --ignore-dependencies ffi && gem install ffi -- --enable-libffi-alloc"
-// ]
-// }
+//  provisioner "shell" {
+//    inline = [
+//      "source ~/.zprofile",
+//      "brew install libimobiledevice ideviceinstaller ios-deploy carthage",
+//      "brew install xcbeautify swiftformat swiftlint swiftgen licenseplist",
+//      "brew install mint",
+//      "git clone --depth 1 https://github.com/tuist/homebrew-tuist.git \"$(brew --repository)/Library/Taps/tuist/homebrew-tuist\"",
+//      "rm -rf \"$(brew --repository)/Library/Taps/tuist/homebrew-tuist/Casks\"",
+//      "tuist_version=$(ruby -ne 'if $_ =~ %r{/download/([^/]+)/}; puts $1; exit; end' \"$(brew --repository)/Library/Taps/tuist/homebrew-tuist/Aliases/tuist\") && brew trust --formula \"tuist/tuist/tuist@$tuist_version\" && brew install --formula \"tuist/tuist/tuist@$tuist_version\"",
+//      "gem update",
+//      "gem install fastlane",
+//      "gem install cocoapods",
+//      "gem install xcpretty",
+//      "gem uninstall --ignore-dependencies ffi && gem install ffi -- --enable-libffi-alloc"
+//    ]
+//  }
 
   // Copy expected runtimes file if provided
   dynamic "provisioner" {
     for_each = var.expected_runtimes_file != "" ? [1] : []
-    labels = ["file"]
+    labels   = ["file"]
     content {
       source      = var.expected_runtimes_file
       destination = "/Users/admin/runtimes.expected.txt"
@@ -257,7 +256,7 @@ build {
   // Verify simulator runtimes match expected list if file was provided
   dynamic "provisioner" {
     for_each = var.expected_runtimes_file != "" ? [1] : []
-    labels = ["shell"]
+    labels   = ["shell"]
     content {
       inline = [
         "source ~/.zprofile",
