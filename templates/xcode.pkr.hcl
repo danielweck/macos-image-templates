@@ -100,6 +100,7 @@ build {
       "brew --version",
       "brew update",
       "brew upgrade",
+      "brew install flox",
 //      "brew install codex",
 //      "brew install --cask claude-code",
 //      "brew install --cask amazon-q"
