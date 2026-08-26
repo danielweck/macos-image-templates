@@ -101,42 +101,46 @@ build {
   // ]
   // }
 
-  // provisioner "shell" {
-  // inline = [
-  // "source ~/.zprofile",
-  // "brew install libyaml", # https://github.com/rbenv/ruby-build/discussions/2118
-  // "brew install rbenv",
-  // "echo 'if which rbenv > /dev/null; then eval \"$(rbenv init -)\"; fi' >> ~/.zprofile",
-  // "brew install mise",
-  // "source ~/.zprofile",
-  // "rbenv install 2.7.8", // latest 2.x.x before EOL
-  // "rbenv install -l | grep -v - | tail -2 | xargs -L1 rbenv install",
-  // "rbenv global $(rbenv install -l | grep -v - | tail -1)",
-  // "gem install bundler",
-  // ]
-  // }
-  // provisioner "shell" {
-  // inline = [
-  // "source ~/.zprofile",
-  // "brew install node@24",
-  // "echo 'export PATH=\"/opt/homebrew/opt/node@24/bin:$PATH\"' >> ~/.zprofile",
-  // "source ~/.zprofile",
-  // "node --version",
-  // "npm install --global yarn",
-  // "yarn --version",
-  // ]
-  // }
-  // provisioner "shell" {
-  // inline = [
-  // "sudo safaridriver --enable",
-  // ]
-  // }
-  // provisioner "shell" {
-  // inline = [
-  // "source ~/.zprofile",
-  // "brew install awscli"
-  // ]
-  // }
+//  provisioner "shell" {
+//    inline = [
+//      "source ~/.zprofile",
+//      "brew install libyaml", # https://github.com/rbenv/ruby-build/discussions/2118
+//      "brew install rbenv",
+//      "echo 'if which rbenv > /dev/null; then eval \"$(rbenv init -)\"; fi' >> ~/.zprofile",
+//      "brew install mise",
+//      "source ~/.zprofile",
+//      "rbenv install 2.7.8", // latest 2.x.x before EOL
+//      "rbenv install -l | grep -v - | tail -2 | xargs -L1 rbenv install",
+//      "rbenv global $(rbenv install -l | grep -v - | tail -1)",
+//      "gem install bundler",
+//    ]
+//  }
+//  provisioner "shell" {
+//    inline = [
+//      "source ~/.zprofile",
+//      "brew install node@24",
+//      "echo 'export PATH=\"/opt/homebrew/opt/node@24/bin:$PATH\"' >> ~/.zprofile",
+//      "source ~/.zprofile",
+//      "node --version",
+//      "npm install --global yarn pnpm",
+//      "echo 'export PNPM_HOME=\"$HOME/Library/pnpm\"' >> ~/.zprofile",
+//      "echo 'export PATH=\"$PNPM_HOME:$PATH\"' >> ~/.zprofile",
+//      "source ~/.zprofile",
+//      "yarn --version",
+//      "pnpm --version",
+//    ]
+//  }
+//  provisioner "shell" {
+//    inline = [
+//      "sudo safaridriver --enable",
+//    ]
+//  }
+//  provisioner "shell" {
+//    inline = [
+//      "source ~/.zprofile",
+//      "brew install awscli"
+//    ]
+//  }
 
   // # Enable UI automation, see https://github.com/cirruslabs/macos-image-templates/issues/136
   // provisioner "shell" {
@@ -152,6 +156,22 @@ build {
   // ]
   // }
 
+  // Install the process-scoped Metal shim for opt-in workloads.
+  provisioner "shell" {
+    inline = ["mkdir -p ~/tart-metal-capabilities-src"]
+  }
+  provisioner "file" {
+    source      = "data/tart-metal-capabilities/"
+    destination = "~/tart-metal-capabilities-src/"
+  }
+  provisioner "shell" {
+    environment_vars = ["TART_METAL_SOURCE_DIR=/Users/admin/tart-metal-capabilities-src"]
+    script           = "scripts/install-tart-metal-capabilities.sh"
+  }
+  provisioner "shell" {
+    inline = ["rm -rf ~/tart-metal-capabilities-src"]
+  }
+
   // Guest agent for Tart VMs
   provisioner "file" {
     source      = "data/tart-guest-daemon.plist"
@@ -165,7 +185,7 @@ build {
     inline = [
       # Install Tart Guest Agent
       "source ~/.zprofile",
-      "brew install cirruslabs/cli/tart-guest-agent",
+      "brew install openai/tools/tart-guest-agent",
 
       # Install daemon variant of the Tart Guest Agent
       "sudo mv ~/tart-guest-daemon.plist /Library/LaunchDaemons/org.cirruslabs.tart-guest-daemon.plist",
