@@ -12,7 +12,7 @@ packer {
 }
 
 source "tart-cli" "tart" {
-  from_ipsw    = "https://updates.cdn-apple.com/2026SummerSeed/7b1c2bd9-7617-426d-92e5-ef204407ffaa/UniversalMac_27.0_26A5416b_Restore.ipsw"
+  from_ipsw    = "https://updates.cdn-apple.com/2026FallFCS/afcfc88e-bbe6-44bf-a5da-07c56eebc06c/UniversalMac_27.0_26A428_Restore.ipsw"
   vm_name      = "golden-gate-vanilla"
   cpu_count    = 4
   memory_gb    = 8
@@ -53,6 +53,16 @@ source "tart-cli" "tart" {
     "<wait10s><leftShiftOn><tab><leftShiftOff><wait1s><spacebar>",
     # Quit System Settings
     "<wait10s><leftAltOn>q<leftAltOff>",
+    # Refocus Terminal after quitting System Settings
+    "<wait10s><leftAltOn><spacebar><leftAltOff>Terminal<wait10s><enter>",
+    # Sharing is no longer listed in the View menu on Golden Gate
+    "<wait10s>open 'x-apple.systempreferences:com.apple.Sharing-Settings.extension'<enter>",
+    # Enable Screen Sharing through the UI to grant the required TCC permissions
+    "<wait10s><tab><tab><tab><tab><tab><tab><spacebar>",
+    # Type in the password to allow enabling Screen Sharing
+    "<wait10s>admin<enter>",
+    # Quit System Settings
+    "<wait10s><leftAltOn>q<leftAltOff>",
   ]
 
   // A (hopefully) temporary workaround for Virtualization.Framework's
@@ -70,8 +80,6 @@ build {
     inline = [
       // Enable passwordless sudo
       "echo admin | sudo -S sh -c \"mkdir -p /etc/sudoers.d/; echo 'admin ALL=(ALL) NOPASSWD: ALL' | EDITOR=tee visudo /etc/sudoers.d/admin-nopasswd\"",
-      // Enable Screen Sharing for "tart run --vnc"
-      "sudo launchctl enable system/com.apple.screensharing",
       // Use the same timezone as the previous Setup Assistant flow
       "sudo systemsetup -settimezone GMT 2>/dev/null",
       // Disable screensaver at login screen
@@ -100,6 +108,8 @@ build {
     inline = [
       # Ensure that Gatekeeper is disabled
       "spctl --status | grep -q 'assessments disabled'",
+      # Ensure that Screen Sharing was enabled
+      "sudo launchctl print system/com.apple.screensharing > /dev/null",
       # Ensure that FileVault remains disabled by default
       "sudo fdesetup status | grep -q 'FileVault is Off'",
     ]
