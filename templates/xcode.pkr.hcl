@@ -58,9 +58,9 @@ variable "android_sdk_tools_version" {
 }
 
 source "tart-cli" "tart" {
-  vm_base_name = "tahoe-base"
+  vm_base_name = "golden-gate-base"
   // use tag or the last element of the xcode_version list
-  vm_name      = "tahoe-xcode:${var.tag != "" ? var.tag : var.xcode_version[0]}"
+  vm_name      = "golden-gate-xcode:${var.tag != "" ? var.tag : var.xcode_version[0]}"
   cpu_count    = 7
   memory_gb    = 12
   disk_size_gb = var.disk_size

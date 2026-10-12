@@ -1,4 +1,4 @@
-Assuming TART is already installed, and `~/Downloads/Xcode_26.6_Universal.xip` exists (from https://developer.apple.com/download/all/ )
+Assuming TART is already installed, and this file exists: `~/Downloads/Xcode_27_Universal.xip` (or `Xcode_27.xip` renamed to `Xcode_27_Universal.xip` ... or `Xcode_26.6_Universal.xip` to use an older version) => download from https://developer.apple.com/download/all/ )
 
 * `brew update`
 * `brew upgrade`
@@ -9,22 +9,22 @@ Assuming TART is already installed, and `~/Downloads/Xcode_26.6_Universal.xip` e
 * `git clone https://github.com/danielweck/macos-image-templates.git tart-macos-image-templates_DANIELWECK`
 * `cd tart-macos-image-templates_DANIELWECK/`
 * `tart list`
-* `packer init templates/vanilla-tahoe.pkr.hcl`
-* `packer build templates/vanilla-tahoe.pkr.hcl`
+* `packer init templates/vanilla-golden-gate.pkr.hcl`
+* `packer build templates/vanilla-golden-gate.pkr.hcl`
 * `tart list`
-* `tart clone tahoe-vanilla tahoe-base`
+* `tart clone golden-gate-vanilla golden-gate-base`
 * `tart list`
 * `packer init "templates/disable-sip-with-username.pkr.hcl"`
-* `packer build -var vm_name="tahoe-base" "templates/disable-sip-with-username.pkr.hcl"`
+* `packer build -var vm_name="golden-gate-base" "templates/disable-sip-with-username.pkr.hcl"`
 * `tart list`
 * `packer init templates/base.pkr.hcl`
-* `packer build -var vm_name="tahoe-base" templates/base.pkr.hcl`
+* `packer build -var vm_name="golden-gate-base" templates/base.pkr.hcl`
 * `tart list`
 * `packer init "templates/enable-sip-with-username.pkr.hcl"`
-* `packer build -var vm_name="tahoe-base" "templates/enable-sip-with-username.pkr.hcl"`
+* `packer build -var vm_name="golden-gate-base" "templates/enable-sip-with-username.pkr.hcl"`
 * `tart list`
 * `packer init templates/xcode.pkr.hcl`
-* `packer build -var xcode_version="[\"26.6\"]" -var xcode_components="[]" templates/xcode.pkr.hcl`
+* `packer build -var xcode_version="[\"27\"]" -var xcode_components="[]" templates/xcode.pkr.hcl` (or `26.6` instead of `27`)
 
 `xcode_components` = `\"MetalToolchain\"`
 ==>
