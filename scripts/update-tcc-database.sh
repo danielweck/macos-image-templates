@@ -101,16 +101,17 @@ update_tcc_database() {
 	EOF
 }
 
+# Resolve the user database before making either update. Never create an empty
+# database at an obsolete path or silently omit user-level grants.
+user_tcc_database="$(resolve_user_tcc_database)"
+
 echo "SQLITE UPDATE: /Library/Application Support/com.apple.TCC/TCC.db"
 
 # Update TCC.db for all users
 update_tcc_database "/Library/Application Support/com.apple.TCC/TCC.db"
 
-# Resolve the user database before making either update. Never create an empty
-# database at an obsolete path or silently omit user-level grants.
-user_tcc_database="$(resolve_user_tcc_database)"
-
 echo "SQLITE UPDATE: ${HOME}/Library/Application Support/com.apple.TCC/TCC.db"
+echo "SQLITE UPDATE (CHECK): ${user_tcc_database}"
 
 # Update TCC.db for the current user
 update_tcc_database "$user_tcc_database"
