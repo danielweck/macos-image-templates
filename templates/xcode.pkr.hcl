@@ -108,6 +108,8 @@ build {
       "brew --version",
       "brew update",
       "brew upgrade",
+      "brew install worktrunk",
+      "wt config shell install || echo 'FAIL: wt config shell install'",
       "brew install flox",
 //      "brew install codex",
 //      "brew install --cask claude-code",
