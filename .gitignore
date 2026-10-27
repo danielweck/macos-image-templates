@@ -8,4 +8,5 @@ packer_cache/
 .idea
 
 packer-builder-veertu-anka
-build.DS_Store
+build
+.DS_Store
