@@ -120,6 +120,9 @@ build {
       "echo 'export NPM_CONFIG_PREFIX=\"$HOME/.cache/npmglobal/NPM_PREFIX\"' >> \"$HOME/.zprofile\"",
       "echo 'export PATH=\"$NPM_CONFIG_PREFIX/bin:$HOME/.local/bin:/opt/homebrew/opt/python@3.15/libexec/bin:$PATH\"' >> \"$HOME/.zprofile\"",
       "echo 'export NODE_PATH=\"$NPM_CONFIG_PREFIX/lib/node_modules\"' >> \"$HOME/.zprofile\"",
+      "echo 'rm \"$HOME/.pi\" || true ; ln -s \"/Volumes/My Shared Files/.pi\" \"$HOME/.pi\" || true' >> \"$HOME/.zprofile\"",
+      "echo 'rm \"$HOME/.claude\" || true ; ln -s \"/Volumes/My Shared Files/.claude\" \"$HOME/.claude\" || true' >> \"$HOME/.zprofile\"",
+      "echo 'rm \"$HOME/_\" || true ; ln -s \"/Volumes/My Shared Files/workspace\" \"$HOME/_\" || true' >> \"$HOME/.zprofile\"",
       "echo \"export HOMEBREW_NO_ANALYTICS=1\" >> ~/.zprofile", // duplicate from base.pkr.hcl
       "source \"$HOME/.zprofile\"",
       "mkdir -p \"$NPM_CONFIG_CACHE\"",
