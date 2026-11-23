@@ -76,7 +76,7 @@ locals {
       type = "shell"
       inline = [
         "source ~/.zprofile",
-        "sudo xcodes install ${version} --experimental-unxip --path /Users/admin/Downloads/Xcode_${version}_Universal.xip --select --empty-trash",
+        "sudo xcodes install ${version} --experimental-unxip --path /Users/admin/Downloads/Xcode_${version}.xip --select --empty-trash",
         // get selected xcode path, strip /Contents/Developer and move to GitHub compatible locations
         "INSTALLED_PATH=$(xcodes select -p)",
         "CONTENTS_DIR=$(dirname $INSTALLED_PATH)",
@@ -104,13 +104,40 @@ build {
       "  sleep 2",
       "done",
       "[[ $size_kb -ge $minimum_kb ]] || { echo 'APFS did not expand to ${var.disk_size} GB within 120 seconds.' >&2; exit 1; }",
+// /opt/homebrew/bin
+      "echo 'export NPM_CONFIG_CACHE=\"${HOME}/.cache/npmglobal/NPM_CACHE\"' >> ~/.zprofile",
+      "echo 'export NPM_CONFIG_PREFIX=\"${HOME}/.cache/npmglobal/NPM_PREFIX\"' >> ~/.zprofile",
+      "echo 'export PATH=\"${NPM_CONFIG_PREFIX}/bin:$PATH\"' >> ~/.zprofile",
+      "echo 'export NODE_PATH=\"${NPM_CONFIG_PREFIX}/lib/node_modules\"' >> ~/.zprofile",
       "source ~/.zprofile",
+      "mkdir -p \"${NPM_CONFIG_CACHE}\" || true",
+      "mkdir -p \"${NPM_CONFIG_PREFIX}\" || true",
       "brew --version",
       "brew update",
       "brew upgrade",
+      "brew install jq",
+      "brew install python",
+      "which python ; whereis python ; python --version || true",
+      "which python3 ; whereis python3 ; python3 --version || true",
+      "brew install node",
+      "which node ; whereis node ; node --version || true",
+      "which npm ; whereis npm ; npm --version || true",
+      "npm config get cache ; npm config get prefix",
+      "npm install --ignore-scripts --foreground-scripts --min-release-age=0 --allow-git=root -g sfw",
+      "which sfw ; whereis sfw ; sfw --version || true",
+      "sfw --verbose npm install --ignore-scripts --foreground-scripts --min-release-age=0 --allow-git=root -g npm@latest",
+      "sfw --verbose npm install --ignore-scripts --foreground-scripts --min-release-age=0 --allow-git=root -g @earendil-works/pi-coding-agent || curl -fsSL https://pi.dev/install.sh | sh",
+      "which pi ; whereis pi ; pi --version || true",
+      "curl -fsSL https://claude.ai/install.sh | bash",
+      "which claude ; whereis claude ; claude --version || true",
+      "brew install pnpm",
+      "which pnpm ; whereis pnpm ; pnpm --version || true",
       "brew install worktrunk",
+      "which wt ; whereis wt ; wt --version || true",
       "wt config shell install || echo 'FAIL: wt config shell install'",
-      "brew install flox",
+      "curl -fsSL https://pkgs.superlogical.com/rex/install.sh | sh -s -- --user",
+      "which rex ; whereis rex ; rex version || true",
+//      "brew install flox",
 //      "brew install codex",
 //      "brew install --cask claude-code",
 //      "brew install --cask amazon-q"
@@ -157,7 +184,7 @@ build {
   }
 
   provisioner "file" {
-    sources     = [for version in var.xcode_version : pathexpand("~/Downloads/Xcode_${version}_Universal.xip")]
+    sources     = [for version in var.xcode_version : pathexpand("~/Downloads/Xcode_${version}.xip")]
     destination = "/Users/admin/Downloads/"
   }
 
@@ -273,6 +300,9 @@ build {
       inline = [
         "source ~/.zprofile",
         "xcrun simctl list runtimes > /Users/admin/runtimes.actual.txt",
+        // simctl can return runtimes with the same version in either order.
+        "LC_ALL=C sort -o /Users/admin/runtimes.actual.txt /Users/admin/runtimes.actual.txt",
+        "LC_ALL=C sort -o /Users/admin/runtimes.expected.txt /Users/admin/runtimes.expected.txt",
         "diff -q /Users/admin/runtimes.actual.txt /Users/admin/runtimes.expected.txt || (echo 'Simulator runtimes do not match expected list' && cat /Users/admin/runtimes.actual.txt && exit 1)",
         "rm /Users/admin/runtimes.actual.txt /Users/admin/runtimes.expected.txt"
       ]

@@ -1,4 +1,4 @@
-Assuming TART is already installed, and this file exists: `~/Downloads/Xcode_27_Universal.xip` (or `Xcode_27.xip` renamed to `Xcode_27_Universal.xip` ... or `Xcode_26.6_Universal.xip` to use an older version) => download from https://developer.apple.com/download/all/ )
+Assuming TART is already installed, and this file exists: `~/Downloads/Xcode_27.2.xip` => download from https://developer.apple.com/download/all/ )
 
 * `brew update`
 * `brew upgrade`
