@@ -30,7 +30,7 @@ Assuming TART is already installed, and this file exists: `~/Downloads/Xcode_27.
 * `tart set golden-gate-xcode --disk-size 60`
 * `packer init templates/xcode.pkr.hcl`
 * `PACKER_LOG=1 packer build -var xcode_version="[\"27.2\"]" -var xcode_components="[]" templates/xcode.pkr.hcl`
-* PROXY FIRST (network vmnet bridge100 168.192.65.x) -- Nono MITM, Apple Container MicroVM, Linux Debian Trixie
+* PROXY FIRST (network vmnet bridge100 168.192.64.x) -- Nono MITM, Apple Container MicroVM, Linux Debian Trixie
 * TART SECOND (network vmnet bridge101 168.192.65.x): `tart run --dir=.pi:~/_/danielweck/ai-llm-harness-coding-agent-things/main/.pi --dir=.claude:~/_/danielweck/ai-llm-harness-coding-agent-things/main/.claude --dir=devbox:~/_/danielweck/devbox/main/:ro --dir=workspace:~/_/danielweck/macos-image-templates:ro --capture-system-keys golden-gate-xcode`
 * CHANGE DEFAULT PASSWORD (`admin`)
 * Change photo background to solid color, etc. (...anything not already done with `defaults write` in `xcode.pkr.hcl`)
