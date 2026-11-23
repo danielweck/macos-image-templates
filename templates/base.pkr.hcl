@@ -56,6 +56,7 @@ build {
       "echo 'eval \"$(/opt/homebrew/bin/brew shellenv)\"' >> ~/.zprofile",
       "echo \"export HOMEBREW_NO_AUTO_UPDATE=1\" >> ~/.zprofile",
       "echo \"export HOMEBREW_NO_INSTALL_CLEANUP=1\" >> ~/.zprofile",
+      "echo \"export HOMEBREW_NO_ANALYTICS=1\" >> ~/.zprofile",
     ]
   }
 
