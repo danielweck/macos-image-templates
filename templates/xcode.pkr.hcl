@@ -550,8 +550,8 @@ build {
 
 provisioner "shell" {
 inline = [
-"echo 'sudo -k security add-trusted-cert -d -p ssl -p basic -k /Library/Keychains/System.keychain \"/Volumes/My Shared Files/devbox/credentials-mitm-proxy-container/ca.crt\" ## sudo -k security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain \"/Volumes/My Shared Files/devbox/credentials-mitm-proxy-container/ca.crt\"' >> \"$HOME/.zprofile-proxy\"",
-"echo 'export HTTP_PROXY=\"http://nono:xxx@127.0.0.1:10255\"' > \"$HOME/.zprofile-proxy\"",
+"echo 'sudo -k security add-trusted-cert -d -p ssl -p basic -k /Library/Keychains/System.keychain \"/Volumes/My Shared Files/devbox/credentials-mitm-proxy-container/ca.crt\" ## sudo -k security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain \"/Volumes/My Shared Files/devbox/credentials-mitm-proxy-container/ca.crt\"' > \"$HOME/.zprofile-proxy\"",
+"echo 'export HTTP_PROXY=\"http://nono:xxx@127.0.0.1:10255\"' >> \"$HOME/.zprofile-proxy\"",
 "echo 'export HTTPS_PROXY=\"http://nono:xxx@127.0.0.1:10255\"' >> \"$HOME/.zprofile-proxy\"",
 "echo 'export NO_PROXY=\"localhost,127.0.0.1,192.168.65.0/24,192.168.64.0/24\"' >> \"$HOME/.zprofile-proxy\"",
 "echo 'export CA_CRT=\"/Volumes/My Shared Files/devbox/credentials-mitm-proxy-container/ca.crt\"' >> \"$HOME/.zprofile-proxy\"",
