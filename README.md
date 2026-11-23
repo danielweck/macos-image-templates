@@ -36,7 +36,7 @@ Assuming TART is already installed, and this file exists: `~/Downloads/Xcode_27.
 * Change photo background to solid color, etc. (...anything not already done with `defaults write` in `xcode.pkr.hcl`)
 * Turn off screen sharing (leave remote SSH access)
 * `ssh admin@$(tart ip golden-gate-xcode)`
-* YES (add): `sudo -k security add-trusted-cert -d -p ssl -p basic -k /Library/Keychains/System.keychain /Volumes/My\ Shared\ Files/devbox/credentials-mitm-proxy-container/ca.crt` (then `source ~/.zprofile` to reload aggregated/amalgamated cert bundle)
+* YES (add): `sudo -k security add-trusted-cert -d -p ssl -p basic -k /Library/Keychains/System.keychain /Volumes/My\ Shared\ Files/devbox/credentials-mitm-proxy-container/ca.crt` (then `source ~/.zprofile-proxy` to reload aggregated/amalgamated cert bundle)
 * YES (remove): `sudo -k security remove-trusted-cert -d /Volumes/My\ Shared\ Files/devbox/credentials-mitm-proxy-container/ca.crt`
 * NO: `sudo -k security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain /Volumes/My\ Shared\ Files/devbox/credentials-mitm-proxy-container/ca.crt`
 

@@ -150,33 +150,18 @@ build {
       "brew install worktrunk",
       "which wt ; whereis wt ; wt --version",
       "echo 'if command -v wt >/dev/null 2>&1; then eval \"$(command wt config shell init zsh)\"; fi' >> \"$HOME/.zshrc\"",
-"echo 'export HTTP_PROXY=\"http://nono:xxx@127.0.0.1:10255\"' >> \"$HOME/.zprofile\"",
-"echo 'export HTTPS_PROXY=\"http://nono:xxx@127.0.0.1:10255\"' >> \"$HOME/.zprofile\"",
-"echo 'export NO_PROXY=\"localhost,127.0.0.1,192.168.65.0/24,192.168.64.0/24\"' >> \"$HOME/.zprofile\"",
-"echo 'export CA_CRT=\"/Volumes/My Shared Files/devbox/credentials-mitm-proxy-container/ca.crt\"' >> \"$HOME/.zprofile\"",
-"echo 'export SSL_CERT_FILE=$CA_CRT' >> \"$HOME/.zprofile\"",
-"echo 'export SSL_CERT_FILE=\"$(brew --prefix)/etc/ca-certificates/cert.pem\"' >> \"$HOME/.zprofile\"",
-"echo 'security find-certificate -a -p /System/Library/Keychains/SystemRootCertificates.keychain > \"$HOME/mac-ca-bundle.pem\"' >> \"$HOME/.zprofile\"",
-"echo 'security find-certificate -a -p /Library/Keychains/System.keychain >> \"$HOME/mac-ca-bundle.pem\"' >> \"$HOME/.zprofile\"",
-"echo 'security find-certificate -a -p /Library/Keychains/System.keychain >> \"$HOME/mac-ca-bundle_.pem\"' >> \"$HOME/.zprofile\"",
-"echo 'export SSL_CERT_FILE=\"$HOME/mac-ca-bundle.pem\"' >> \"$HOME/.zprofile\"",
-"echo 'export CA_CRT_X=\"/Volumes/My Shared Files/devbox/credentials-mitm-proxy-container/ca.crt\"' >> \"$HOME/.zprofile\"",
-"echo 'export NODE_EXTRA_CA_CERTS=$CA_CRT_X' >> \"$HOME/.zprofile\"",
-"echo 'export NODE_EXTRA_CA_CERTS=\"$HOME/mac-ca-bundle.pem\"' >> \"$HOME/.zprofile\"",
-"echo 'export NODE_USE_ENV_PROXY=1' >> \"$HOME/.zprofile\"",
-"echo 'export NODE_OPTIONS=\"--use-openssl-ca\" # --use-system-ca NODE_TLS_REJECT_UNAUTHORIZED=0' >> \"$HOME/.zprofile\"",
-"echo 'git config --global user.email daniel.weck@gmail.com' >> \"$HOME/.zprofile\"",
-"echo 'git config --global user.name \"Daniel Weck\"' >> \"$HOME/.zprofile\"",
-"echo 'git config --global http.\"https://github.com\".proxy \"\"' >> \"$HOME/.zprofile\"",
-"echo 'git config --global uploadpack.allowFilter true' >> \"$HOME/.zprofile\"",
-"echo 'git config --global uploadpack.allowAnySHA1InWant true' >> \"$HOME/.zprofile\"",
-"echo 'git config --global core.editor vi' >> \"$HOME/.zprofile\"",
       "rm -rf \"$HOME/.pi\" || true",
       "echo 'rm \"$HOME/.pi\" || true ; ln -s \"/Volumes/My Shared Files/.pi\" \"$HOME/.pi\" || true' >> \"$HOME/.zprofile\"",
       "rm -rf \"$HOME/.claude\" || true",
       "echo 'rm \"$HOME/.claude\" || true ; ln -s \"/Volumes/My Shared Files/.claude\" \"$HOME/.claude\" || true' >> \"$HOME/.zprofile\"",
       "rm -rf \"$HOME/_\" || true",
-      "echo 'rm \"$HOME/_\" || true ; ln -s \"/Volumes/My Shared Files/workspace\" \"$HOME/_\" || true' >> \"$HOME/.zprofile\""
+      "echo 'rm \"$HOME/_\" || true ; ln -s \"/Volumes/My Shared Files/workspace\" \"$HOME/_\" || true' >> \"$HOME/.zprofile\"",
+"echo 'git config --global user.email daniel.weck@gmail.com' >> \"$HOME/.zprofile\"",
+"echo 'git config --global user.name \"Daniel Weck\"' >> \"$HOME/.zprofile\"",
+"echo 'git config --global http.\"https://github.com\".proxy \"\"' >> \"$HOME/.zprofile\"",
+"echo 'git config --global uploadpack.allowFilter true' >> \"$HOME/.zprofile\"",
+"echo 'git config --global uploadpack.allowAnySHA1InWant true' >> \"$HOME/.zprofile\"",
+"echo 'git config --global core.editor vi' >> \"$HOME/.zprofile\""
 //      "wt config shell install || echo 'FAIL: wt config shell install'",
 //      "curl -fsSL https://pkgs.superlogical.com/rex/install.sh | sh -s -- --user",
 //      "which rex ; whereis rex ; rex version",
@@ -562,4 +547,25 @@ build {
 // "rm ~/setup-info-template.json"
 // ]
 // }
+
+provisioner "shell" {
+inline = [
+"echo 'export HTTP_PROXY=\"http://nono:xxx@127.0.0.1:10255\"' > \"$HOME/.zprofile-proxy\"",
+"echo 'export HTTPS_PROXY=\"http://nono:xxx@127.0.0.1:10255\"' >> \"$HOME/.zprofile-proxy\"",
+"echo 'export NO_PROXY=\"localhost,127.0.0.1,192.168.65.0/24,192.168.64.0/24\"' >> \"$HOME/.zprofile-proxy\"",
+"echo 'export CA_CRT=\"/Volumes/My Shared Files/devbox/credentials-mitm-proxy-container/ca.crt\"' >> \"$HOME/.zprofile-proxy\"",
+"echo 'export SSL_CERT_FILE=$CA_CRT' >> \"$HOME/.zprofile-proxy\"",
+"echo 'export SSL_CERT_FILE=\"$(brew --prefix)/etc/ca-certificates/cert.pem\"' >> \"$HOME/.zprofile-proxy\"",
+"echo 'security find-certificate -a -p /System/Library/Keychains/SystemRootCertificates.keychain > \"$HOME/mac-ca-bundle.pem\"' >> \"$HOME/.zprofile-proxy\"",
+"echo 'security find-certificate -a -p /Library/Keychains/System.keychain >> \"$HOME/mac-ca-bundle.pem\"' >> \"$HOME/.zprofile-proxy\"",
+"echo 'security find-certificate -a -p /Library/Keychains/System.keychain >> \"$HOME/mac-ca-bundle_.pem\"' >> \"$HOME/.zprofile-proxy\"",
+"echo 'export SSL_CERT_FILE=\"$HOME/mac-ca-bundle.pem\"' >> \"$HOME/.zprofile-proxy\"",
+"echo 'export CA_CRT_X=\"/Volumes/My Shared Files/devbox/credentials-mitm-proxy-container/ca.crt\"' >> \"$HOME/.zprofile-proxy\"",
+"echo 'export NODE_EXTRA_CA_CERTS=$CA_CRT_X' >> \"$HOME/.zprofile-proxy\"",
+"echo 'export NODE_EXTRA_CA_CERTS=\"$HOME/mac-ca-bundle.pem\"' >> \"$HOME/.zprofile-proxy\"",
+"echo 'export NODE_USE_ENV_PROXY=1' >> \"$HOME/.zprofile-proxy\"",
+"echo 'export NODE_OPTIONS=\"--use-openssl-ca\" # --use-system-ca NODE_TLS_REJECT_UNAUTHORIZED=0' >> \"$HOME/.zprofile-proxy\""
+]
+}
+
 }
