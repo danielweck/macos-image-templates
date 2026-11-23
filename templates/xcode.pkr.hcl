@@ -44,12 +44,12 @@ variable "tag" {
 
 variable "disk_size" {
   type    = number
-  default = 100
+  default = 60
 }
 
 variable "disk_free_mb" {
   type    = number
-  default = 15000
+  default = 10000
 }
 
 variable "android_sdk_tools_version" {
@@ -65,6 +65,7 @@ source "tart-cli" "tart" {
   vm_name      = "golden-gate-xcode"
   cpu_count    = 7
   memory_gb    = 12
+  // disk_size_gb = 60
   headless     = true
   ssh_password = "admin"
   ssh_username = "admin"
@@ -106,38 +107,41 @@ build {
       "done",
       "[[ $size_kb -ge $minimum_kb ]] || { echo 'APFS did not expand to ${var.disk_size} GB within 120 seconds.' >&2; exit 1; }",
 // /opt/homebrew/bin
+// /opt/homebrew/opt/python@3.15/libexec/bin
       "echo 'export NPM_CONFIG_CACHE=\"$HOME/.cache/npmglobal/NPM_CACHE\"' >> ~/.zprofile",
       "echo 'export NPM_CONFIG_PREFIX=\"$HOME/.cache/npmglobal/NPM_PREFIX\"' >> ~/.zprofile",
-      "echo 'export PATH=\"$NPM_CONFIG_PREFIX/bin:$PATH\"' >> ~/.zprofile",
+      "echo 'export PATH=\"$NPM_CONFIG_PREFIX/bin:$HOME/.local/bin:$PATH\"' >> ~/.zprofile",
       "echo 'export NODE_PATH=\"$NPM_CONFIG_PREFIX/lib/node_modules\"' >> ~/.zprofile",
       "source ~/.zprofile",
-      "mkdir -p \"$NPM_CONFIG_CACHE\" || true",
-      "mkdir -p \"$NPM_CONFIG_PREFIX\" || true",
+      "mkdir -p \"$NPM_CONFIG_CACHE\"",
+      "mkdir -p \"$NPM_CONFIG_PREFIX\"",
       "brew --version",
       "brew update",
       "brew upgrade",
       "brew install jq",
       "brew install python",
-      "which python ; whereis python ; python --version || true",
-      "which python3 ; whereis python3 ; python3 --version || true",
+//      "which python ; whereis python ; python --version",
+      "which python3 ; whereis python3 ; python3 --version",
       "brew install node",
-      "which node ; whereis node ; node --version || true",
-      "which npm ; whereis npm ; npm --version || true",
+      "which node ; whereis node ; node --version",
+      "which npm ; whereis npm ; npm --version",
       "npm config get cache ; npm config get prefix",
       "npm install --ignore-scripts --foreground-scripts --min-release-age=0 --allow-git=root -g sfw",
-      "which sfw ; whereis sfw ; sfw --version || true",
+      "which sfw ; whereis sfw ; sfw --version",
       "sfw --verbose npm install --ignore-scripts --foreground-scripts --min-release-age=0 --allow-git=root -g npm@latest",
+      "which npm ; whereis npm ; npm --version",
       "sfw --verbose npm install --ignore-scripts --foreground-scripts --min-release-age=0 --allow-git=root -g @earendil-works/pi-coding-agent || curl -fsSL https://pi.dev/install.sh | sh",
-      "which pi ; whereis pi ; pi --version || true",
+      "which pi ; whereis pi ; pi --version",
       "curl -fsSL https://claude.ai/install.sh | bash",
-      "which claude ; whereis claude ; claude --version || true",
+      "which claude ; whereis claude ; claude --version",
       "brew install pnpm",
-      "which pnpm ; whereis pnpm ; pnpm --version || true",
+      "which pnpm ; whereis pnpm ; pnpm --version",
       "brew install worktrunk",
-      "which wt ; whereis wt ; wt --version || true",
+      "which wt ; whereis wt ; wt --version",
+      "touch ~/.zshrc || true",
       "wt config shell install || echo 'FAIL: wt config shell install'",
       "curl -fsSL https://pkgs.superlogical.com/rex/install.sh | sh -s -- --user",
-      "which rex ; whereis rex ; rex version || true",
+      "which rex ; whereis rex ; rex version",
 //      "brew install flox",
 //      "brew install codex",
 //      "brew install --cask claude-code",
@@ -356,7 +360,7 @@ build {
 // ]
 // }
 
-  // check there is at least 15GB of free space and fail if not
+  // check there is at least 10GB of free space and fail if not
   provisioner "shell" {
     inline = [
       "source ~/.zprofile",

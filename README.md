@@ -12,6 +12,7 @@ Assuming TART is already installed, and this file exists: `~/Downloads/Xcode_27.
 * `packer init templates/vanilla-golden-gate.pkr.hcl`
 * `packer build templates/vanilla-golden-gate.pkr.hcl`
 * `tart list`
+* `tart delete golden-gate-base`
 * `tart clone golden-gate-vanilla golden-gate-base`
 * `tart list`
 * `packer init "templates/disable-sip-with-username.pkr.hcl"`
@@ -23,10 +24,12 @@ Assuming TART is already installed, and this file exists: `~/Downloads/Xcode_27.
 * `packer init "templates/enable-sip-with-username.pkr.hcl"`
 * `packer build -var vm_name="golden-gate-base" "templates/enable-sip-with-username.pkr.hcl"`
 * `tart list`
+* `tart delete golden-gate-xcode`
 * `tart clone golden-gate-base golden-gate-xcode`
 * `tart list`
+* `tart set golden-gate-xcode --disk-size 60`
 * `packer init templates/xcode.pkr.hcl`
-* `packer build -var xcode_version="[\"27.2\"]" -var xcode_components="[]" templates/xcode.pkr.hcl`
+* `PACKER_LOG=1 packer build -var xcode_version="[\"27.2\"]" -var xcode_components="[]" templates/xcode.pkr.hcl`
 
 `xcode_components` = `\"MetalToolchain\"`
 ==>
