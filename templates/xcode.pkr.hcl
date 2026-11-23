@@ -550,6 +550,7 @@ build {
 
 provisioner "shell" {
 inline = [
+"echo 'sudo -k security add-trusted-cert -d -p ssl -p basic -k /Library/Keychains/System.keychain \"/Volumes/My Shared Files/devbox/credentials-mitm-proxy-container/ca.crt\" ## sudo -k security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain \"/Volumes/My Shared Files/devbox/credentials-mitm-proxy-container/ca.crt\"' >> \"$HOME/.zprofile-proxy\"",
 "echo 'export HTTP_PROXY=\"http://nono:xxx@127.0.0.1:10255\"' > \"$HOME/.zprofile-proxy\"",
 "echo 'export HTTPS_PROXY=\"http://nono:xxx@127.0.0.1:10255\"' >> \"$HOME/.zprofile-proxy\"",
 "echo 'export NO_PROXY=\"localhost,127.0.0.1,192.168.65.0/24,192.168.64.0/24\"' >> \"$HOME/.zprofile-proxy\"",
@@ -565,6 +566,21 @@ inline = [
 "echo 'export NODE_EXTRA_CA_CERTS=\"$HOME/mac-ca-bundle.pem\"' >> \"$HOME/.zprofile-proxy\"",
 "echo 'export NODE_USE_ENV_PROXY=1' >> \"$HOME/.zprofile-proxy\"",
 "echo 'export NODE_OPTIONS=\"--use-openssl-ca\" # --use-system-ca NODE_TLS_REJECT_UNAUTHORIZED=0' >> \"$HOME/.zprofile-proxy\""
+]
+}
+
+provisioner "shell" {
+inline = [
+"echo 'unset HTTP_PROXY' > \"$HOME/.zprofile-unproxy\"",
+"echo 'unset HTTPS_PROXY' >> \"$HOME/.zprofile-unproxy\"",
+"echo 'unset NO_PROXY' >> \"$HOME/.zprofile-unproxy\"",
+"echo 'unset CA_CRT' >> \"$HOME/.zprofile-unproxy\"",
+"echo 'unset SSL_CERT_FILE' >> \"$HOME/.zprofile-unproxy\"",
+"echo 'unset CA_CRT_X' >> \"$HOME/.zprofile-unproxy\"",
+"echo 'unset NODE_EXTRA_CA_CERTS' >> \"$HOME/.zprofile-unproxy\"",
+"echo 'unset NODE_USE_ENV_PROXY' >> \"$HOME/.zprofile-unproxy\"",
+"echo 'unset NODE_OPTIONS' >> \"$HOME/.zprofile-unproxy\"",
+"echo 'sudo -k security remove-trusted-cert -d \"/Volumes/My Shared Files/devbox/credentials-mitm-proxy-container/ca.crt\"' >> \"$HOME/.zprofile-unproxy\""
 ]
 }
 
