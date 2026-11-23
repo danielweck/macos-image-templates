@@ -31,11 +31,14 @@ Assuming TART is already installed, and this file exists: `~/Downloads/Xcode_27.
 * `packer init templates/xcode.pkr.hcl`
 * `PACKER_LOG=1 packer build -var xcode_version="[\"27.2\"]" -var xcode_components="[]" templates/xcode.pkr.hcl`
 * `tart run --dir=.pi:~/_/danielweck/ai-llm-harness-coding-agent-things/main/.pi --dir=.claude:~/_/danielweck/ai-llm-harness-coding-agent-things/main/.claude --dir=devbox:~/_/danielweck/devbox/main/:ro --dir=workspace:~/_/danielweck/macos-image-templates:ro --capture-system-keys golden-gate-xcode`
+* PROXY SSH TUNNEL (after starting Nono in Apple Container Linux Debian Trixie MicroVM): `export PROXY_IP=$(container inspect credentials-mitm-proxy-container | jq -r '.[0].status.networks.[0].ipv4Address' | cut -d'/' -f1) ; ssh -N -R 127.0.0.1:10255:$PROXY_IP:10255 admin@$(tart ip golden-gate-xcode)`
 * CHANGE DEFAULT PASSWORD (`admin`)
 * Change photo background to solid color, etc. (...anything not already done with `defaults write` in `xcode.pkr.hcl`)
 * Turn off screen sharing (leave remote SSH access)
-* `sudo -k security add-trusted-cert -d -p ssl -p basic -k /Library/Keychains/System.keychain /Volumes/My\ Shared\ Files/devbox/credentials-mitm-proxy-container/ca.crt`
 * `ssh admin@$(tart ip golden-gate-xcode)`
+* YES (add): `sudo -k security add-trusted-cert -d -p ssl -p basic -k /Library/Keychains/System.keychain /Volumes/My\ Shared\ Files/devbox/credentials-mitm-proxy-container/ca.crt` (then `source ~/.zprofile` to reload aggregated/amalgamated cert bundle)
+* YES (remove): `sudo -k security remove-trusted-cert -d /Volumes/My\ Shared\ Files/devbox/credentials-mitm-proxy-container/ca.crt`
+* NO: `sudo -k security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain /Volumes/My\ Shared\ Files/devbox/credentials-mitm-proxy-container/ca.crt`
 
 `xcode_components` = `\"MetalToolchain\"`
 ==>
