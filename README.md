@@ -23,8 +23,10 @@ Assuming TART is already installed, and this file exists: `~/Downloads/Xcode_27.
 * `packer init "templates/enable-sip-with-username.pkr.hcl"`
 * `packer build -var vm_name="golden-gate-base" "templates/enable-sip-with-username.pkr.hcl"`
 * `tart list`
+* `tart clone golden-gate-base golden-gate-xcode`
+* `tart list`
 * `packer init templates/xcode.pkr.hcl`
-* `packer build -var xcode_version="[\"27\"]" -var xcode_components="[]" templates/xcode.pkr.hcl` (or `26.6` instead of `27`)
+* `packer build -var xcode_version="[\"27.2\"]" -var xcode_components="[]" templates/xcode.pkr.hcl`
 
 `xcode_components` = `\"MetalToolchain\"`
 ==>

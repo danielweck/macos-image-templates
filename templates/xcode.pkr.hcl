@@ -61,7 +61,8 @@ source "tart-cli" "tart" {
   // The workflow sizes the VM before boot; only the guest daemon resizes APFS.
   recovery_partition = "keep"
   // use tag or the last element of the xcode_version list
-  vm_name      = "golden-gate-xcode:${var.tag != "" ? var.tag : var.xcode_version[0]}"
+  // vm_name      = "golden-gate-xcode:${var.tag != "" ? var.tag : var.xcode_version[0]}"
+  vm_name      = "golden-gate-xcode"
   cpu_count    = 7
   memory_gb    = 12
   headless     = true
@@ -105,13 +106,13 @@ build {
       "done",
       "[[ $size_kb -ge $minimum_kb ]] || { echo 'APFS did not expand to ${var.disk_size} GB within 120 seconds.' >&2; exit 1; }",
 // /opt/homebrew/bin
-      "echo 'export NPM_CONFIG_CACHE=\"${HOME}/.cache/npmglobal/NPM_CACHE\"' >> ~/.zprofile",
-      "echo 'export NPM_CONFIG_PREFIX=\"${HOME}/.cache/npmglobal/NPM_PREFIX\"' >> ~/.zprofile",
-      "echo 'export PATH=\"${NPM_CONFIG_PREFIX}/bin:$PATH\"' >> ~/.zprofile",
-      "echo 'export NODE_PATH=\"${NPM_CONFIG_PREFIX}/lib/node_modules\"' >> ~/.zprofile",
+      "echo 'export NPM_CONFIG_CACHE=\"$HOME/.cache/npmglobal/NPM_CACHE\"' >> ~/.zprofile",
+      "echo 'export NPM_CONFIG_PREFIX=\"$HOME/.cache/npmglobal/NPM_PREFIX\"' >> ~/.zprofile",
+      "echo 'export PATH=\"$NPM_CONFIG_PREFIX/bin:$PATH\"' >> ~/.zprofile",
+      "echo 'export NODE_PATH=\"$NPM_CONFIG_PREFIX/lib/node_modules\"' >> ~/.zprofile",
       "source ~/.zprofile",
-      "mkdir -p \"${NPM_CONFIG_CACHE}\" || true",
-      "mkdir -p \"${NPM_CONFIG_PREFIX}\" || true",
+      "mkdir -p \"$NPM_CONFIG_CACHE\" || true",
+      "mkdir -p \"$NPM_CONFIG_PREFIX\" || true",
       "brew --version",
       "brew update",
       "brew upgrade",
