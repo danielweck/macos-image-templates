@@ -111,8 +111,6 @@ function sudo_k() {
     sudo -K
 }
 alias sudok="sudo_k"
-
-source "$HOME/proxy-do.sh"
 EOF
 
 source "$HOME/.zprofile"
@@ -168,3 +166,5 @@ rm "$HOME/_" || true ; ln -s "/Volumes/My Shared Files/workspace" "$HOME/_" || t
 #which rex ; whereis rex ; rex version
 
 #brew install flox
+
+echo 'source "$HOME/proxy-do.sh"' >> "$HOME/.zprofile"
