@@ -106,66 +106,7 @@ build {
       "  sleep 2",
       "done",
       "[[ $size_kb -ge $minimum_kb ]] || { echo 'APFS did not expand to ${var.disk_size} GB within 120 seconds.' >&2; exit 1; }",
-// /opt/homebrew/bin
-// /opt/homebrew/opt/python@3.15/libexec/bin
-      "touch \"$HOME/.zshrc\" || true",
-      "echo 'export CLICOLOR=1' >>\"$HOME/.zshrc\"",
-      "echo '## export GPG_TTY=$(tty)' >> \"$HOME/.zshrc\"",
-      "echo 'alias lss=\"ls -alshFGt --color=auto\"' >> \"$HOME/.zshrc\"",
-      "echo 'setopt HIST_IGNORE_SPACE' >>\"$HOME/.zshrc\"",
-      "echo 'setopt PROMPT_SUBST' >>\"$HOME/.zshrc\"",
-      "echo 'autoload -Uz compinit && compinit' >>\"$HOME/.zshrc\"",
-      "echo 'autoload -U colors && colors' >>\"$HOME/.zshrc\"",
-      "echo 'export PI_CLIPBOARD_OSC52=1' >> \"$HOME/.zprofile\"",
-      "echo 'export CLAUDE_CODE_OAUTH_TOKEN=sk-ant-oat01-xxx' >> \"$HOME/.zprofile\"",
-      "echo 'export NPM_CONFIG_CACHE=\"$HOME/.cache/npmglobal/NPM_CACHE\"' >> \"$HOME/.zprofile\"",
-      "echo 'export NPM_CONFIG_PREFIX=\"$HOME/.cache/npmglobal/NPM_PREFIX\"' >> \"$HOME/.zprofile\"",
-      "echo 'export PATH=\"$NPM_CONFIG_PREFIX/bin:$HOME/.local/bin:/opt/homebrew/opt/python@3.15/libexec/bin:$PATH\"' >> \"$HOME/.zprofile\"",
-      "echo 'export NODE_PATH=\"$NPM_CONFIG_PREFIX/lib/node_modules\"' >> \"$HOME/.zprofile\"",
-      "echo \"export HOMEBREW_NO_ANALYTICS=1\" >> ~/.zprofile", // duplicate from base.pkr.hcl
-      "source \"$HOME/.zprofile\"",
-      "mkdir -p \"$NPM_CONFIG_CACHE\"",
-      "mkdir -p \"$NPM_CONFIG_PREFIX\"",
-      "brew --version",
-      "brew update",
-      "brew upgrade",
-      "brew install jq",
-      "brew install python",
-      "which python ; whereis python ; python --version",
-      "which python3 ; whereis python3 ; python3 --version",
-      "brew install node",
-      "which node ; whereis node ; node --version",
-      "which npm ; whereis npm ; npm --version",
-      "npm config get cache ; npm config get prefix",
-      "npm install --ignore-scripts --foreground-scripts --min-release-age=0 --allow-git=root -g sfw",
-      "which sfw ; whereis sfw ; sfw --version",
-      "sfw --verbose npm install --ignore-scripts --foreground-scripts --min-release-age=0 --allow-git=root -g npm@latest",
-      "which npm ; whereis npm ; npm --version ; \"$NPM_CONFIG_PREFIX/bin/npm\" --version",
-      "sfw --verbose npm install --ignore-scripts --foreground-scripts --min-release-age=0 --allow-git=root -g @earendil-works/pi-coding-agent || curl -fsSL https://pi.dev/install.sh | sh",
-      "which pi ; whereis pi ; pi --version",
-      "curl -fsSL https://claude.ai/install.sh | bash",
-      "which claude ; whereis claude ; claude --version",
-      "brew install pnpm",
-      "which pnpm ; whereis pnpm ; pnpm --version",
-      "brew install worktrunk",
-      "which wt ; whereis wt ; wt --version",
-      "echo 'if command -v wt >/dev/null 2>&1; then eval \"$(command wt config shell init zsh)\"; fi' >> \"$HOME/.zshrc\"",
-      "rm -rf \"$HOME/.pi\" || true",
-      "echo 'rm \"$HOME/.pi\" || true ; ln -s \"/Volumes/My Shared Files/.pi\" \"$HOME/.pi\" || true' >> \"$HOME/.zprofile\"",
-      "rm -rf \"$HOME/.claude\" || true",
-      "echo 'rm \"$HOME/.claude\" || true ; ln -s \"/Volumes/My Shared Files/.claude\" \"$HOME/.claude\" || true' >> \"$HOME/.zprofile\"",
-      "rm -rf \"$HOME/_\" || true",
-      "echo 'rm \"$HOME/_\" || true ; ln -s \"/Volumes/My Shared Files/workspace\" \"$HOME/_\" || true' >> \"$HOME/.zprofile\"",
-"echo 'git config --global user.email daniel.weck@gmail.com' >> \"$HOME/.zprofile\"",
-"echo 'git config --global user.name \"Daniel Weck\"' >> \"$HOME/.zprofile\"",
-"echo 'git config --global http.\"https://github.com\".proxy \"\"' >> \"$HOME/.zprofile\"",
-"echo 'git config --global uploadpack.allowFilter true' >> \"$HOME/.zprofile\"",
-"echo 'git config --global uploadpack.allowAnySHA1InWant true' >> \"$HOME/.zprofile\"",
-"echo 'git config --global core.editor vi' >> \"$HOME/.zprofile\""
-//      "wt config shell install || echo 'FAIL: wt config shell install'",
-//      "curl -fsSL https://pkgs.superlogical.com/rex/install.sh | sh -s -- --user",
-//      "which rex ; whereis rex ; rex version",
-//      "brew install flox",
+      "${path.root}/zprofile.sh"
 //      "brew install codex",
 //      "brew install --cask claude-code",
 //      "brew install --cask amazon-q"
@@ -550,37 +491,7 @@ build {
 
 provisioner "shell" {
 inline = [
-"echo 'sudo -k security add-trusted-cert -d -p ssl -p basic -k /Library/Keychains/System.keychain \"/Volumes/My Shared Files/devbox/credentials-mitm-proxy-container/ca.crt\" ## sudo -k security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain \"/Volumes/My Shared Files/devbox/credentials-mitm-proxy-container/ca.crt\"' > \"$HOME/.zprofile-proxy\"",
-"echo 'export HTTP_PROXY=\"http://nono:xxx@127.0.0.1:10255\"' >> \"$HOME/.zprofile-proxy\"",
-"echo 'export HTTPS_PROXY=\"http://nono:xxx@127.0.0.1:10255\"' >> \"$HOME/.zprofile-proxy\"",
-"echo 'export NO_PROXY=\"localhost,127.0.0.1,192.168.65.0/24,192.168.64.0/24\"' >> \"$HOME/.zprofile-proxy\"",
-"echo 'export CA_CRT=\"/Volumes/My Shared Files/devbox/credentials-mitm-proxy-container/ca.crt\"' >> \"$HOME/.zprofile-proxy\"",
-"echo 'export SSL_CERT_FILE=$CA_CRT' >> \"$HOME/.zprofile-proxy\"",
-"echo 'export SSL_CERT_FILE=\"$(brew --prefix)/etc/ca-certificates/cert.pem\"' >> \"$HOME/.zprofile-proxy\"",
-"echo 'security find-certificate -a -p /System/Library/Keychains/SystemRootCertificates.keychain > \"$HOME/mac-ca-bundle.pem\"' >> \"$HOME/.zprofile-proxy\"",
-"echo 'security find-certificate -a -p /Library/Keychains/System.keychain >> \"$HOME/mac-ca-bundle.pem\"' >> \"$HOME/.zprofile-proxy\"",
-"echo 'security find-certificate -a -p /Library/Keychains/System.keychain >> \"$HOME/mac-ca-bundle_.pem\"' >> \"$HOME/.zprofile-proxy\"",
-"echo 'export SSL_CERT_FILE=\"$HOME/mac-ca-bundle.pem\"' >> \"$HOME/.zprofile-proxy\"",
-"echo 'export CA_CRT_X=\"/Volumes/My Shared Files/devbox/credentials-mitm-proxy-container/ca.crt\"' >> \"$HOME/.zprofile-proxy\"",
-"echo 'export NODE_EXTRA_CA_CERTS=$CA_CRT_X' >> \"$HOME/.zprofile-proxy\"",
-"echo 'export NODE_EXTRA_CA_CERTS=\"$HOME/mac-ca-bundle.pem\"' >> \"$HOME/.zprofile-proxy\"",
-"echo 'export NODE_USE_ENV_PROXY=1' >> \"$HOME/.zprofile-proxy\"",
-"echo 'export NODE_OPTIONS=\"--use-openssl-ca\" # --use-system-ca NODE_TLS_REJECT_UNAUTHORIZED=0' >> \"$HOME/.zprofile-proxy\""
-]
-}
-
-provisioner "shell" {
-inline = [
-"echo 'unset HTTP_PROXY' > \"$HOME/.zprofile-unproxy\"",
-"echo 'unset HTTPS_PROXY' >> \"$HOME/.zprofile-unproxy\"",
-"echo 'unset NO_PROXY' >> \"$HOME/.zprofile-unproxy\"",
-"echo 'unset CA_CRT' >> \"$HOME/.zprofile-unproxy\"",
-"echo 'unset SSL_CERT_FILE' >> \"$HOME/.zprofile-unproxy\"",
-"echo 'unset CA_CRT_X' >> \"$HOME/.zprofile-unproxy\"",
-"echo 'unset NODE_EXTRA_CA_CERTS' >> \"$HOME/.zprofile-unproxy\"",
-"echo 'unset NODE_USE_ENV_PROXY' >> \"$HOME/.zprofile-unproxy\"",
-"echo 'unset NODE_OPTIONS' >> \"$HOME/.zprofile-unproxy\"",
-"echo 'sudo -k security remove-trusted-cert -d \"/Volumes/My Shared Files/devbox/credentials-mitm-proxy-container/ca.crt\"' >> \"$HOME/.zprofile-unproxy\""
+"${path.root}/proxy.sh",
 ]
 }
 
