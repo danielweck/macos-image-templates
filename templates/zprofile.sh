@@ -83,8 +83,8 @@ function git_shallow_clone_branch() {
     git clone --filter=blob:none --depth 1 --no-local --shallow-submodules "\$1" "\$2"
     git -C "\$2" status
     git -C "\$2" branch -vv
-    git -C "\$2" remote -v
     git -C "\$2" log
+    git -C "\$2" remote -v
 }
 alias git-shallow-clone-branch="git_shallow_clone_branch"
 
@@ -93,8 +93,8 @@ function git_shallow_clone_bare() {
     git clone --filter=blob:none --depth 1 --no-local --shallow-submodules --bare "\$1" "\$2"
     git -C "\$2" status
     git -C "\$2" branch -vv
-    git -C "\$2" remote -v
     git -C "\$2" log
+    git -C "\$2" remote -v
 }
 alias git-shallow-clone-bare="git_shallow_clone_bare"
 
@@ -125,8 +125,10 @@ function git_in() {
     git -C "\$dest" reset --mixed
     git -C "\$dest" status
     git -C "\$dest" branch -vv
-    git -C "\$dest" remote -v
     git -C "\$dest" log
+    git -C "\$dest" remote -v
+    git -C "\$dest" remote remove origin
+    git -C "\$dest" remote -v
 }
 alias git-in="git_in"
 
