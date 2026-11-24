@@ -499,6 +499,6 @@ script = "${path.root}/zprofile.sh"
 
 provisioner "shell" {
 inline = [
-"echo 'source "$HOME/proxy-do.sh"' >> "$HOME/.zprofile""
+"echo 'source \"$HOME/proxy-do.sh\"' >> \"$HOME/.zprofile\""
 ]
 }
