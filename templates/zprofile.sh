@@ -50,25 +50,31 @@ alias sudok="sudo_k"
 
 unalias virtiofs-remount >/dev/null 2>&1 || true
 function virtiofs_remount() {
+    sudo umount "/Volumes/My Shared Files"
     #sudo rm -rf ~/Desktop/virtiofs
     #sudo mkdir -p ~/Desktop/virtiofs
     #sudo chmod 700 ~/Desktop/virtiofs
-    mkdir -p ~/Desktop/virtiofs || true
-    ls -alshFGt --color=auto ~/Desktop/virtiofs
-    sudo umount "/Volumes/My Shared Files"
-    sudo_k mount_virtiofs com.apple.virtio-fs.automount ~/Desktop/virtiofs
+    mkdir -p "/Volumes/My Shared Files" || true
+    ls -alshFGt --color=auto "/Volumes/My Shared Files"
+    sudo_k mount_virtiofs com.apple.virtio-fs.automount "/Volumes/My Shared Files"
+    mkdir -p "/Volumes/My Shared Files" || true
+    ls -alshFGt --color=auto "/Volumes/My Shared Files"
 }
 alias virtiofs-remount="virtiofs_remount"
 
 unalias rsync-in >/dev/null 2>&1 || true
 function rsync_in() {
-    sudo_k rsync -a --filter=':- .gitignore' --no-p --no-o --no-g --chown=admin:staff --exclude '.git' --exclude '.bare' --exclude '.DS_Store' --exclude '.flox/' --exclude 'node_modules/' --exclude 'out/' --exclude 'dist/' --exclude 'release/' "/Volumes/My Shared Files/workspace/" "\$HOME/Desktop/_/"
+    #sudo_k
+    #--chown=admin:staff
+    rsync -a --filter=':- .gitignore' --no-p --no-o --no-g --exclude '.git' --exclude '.bare' --exclude '.DS_Store' --exclude '.flox/' --exclude 'node_modules/' --exclude 'out/' --exclude 'dist/' --exclude 'release/' "/Volumes/My Shared Files/workspace/" "\$HOME/Desktop/_/"
 }
 alias rsync-in="rsync_in"
 
 unalias rsync-out >/dev/null 2>&1 || true
 function rsync_out() {
-    sudo_k rsync -av --filter=':- .gitignore' --no-p --no-o --no-g --chown=admin:staff --exclude '.git' --exclude '.bare' --exclude '.DS_Store' --exclude '.flox/' --exclude 'node_modules/' --exclude 'out/' --exclude 'dist/' --exclude 'release/' "\$HOME/Desktop/_/" "/Volumes/My Shared Files/workspace/"
+    #sudo_k
+    #--chown=admin:staff
+    rsync -av --filter=':- .gitignore' --no-p --no-o --no-g --exclude '.git' --exclude '.bare' --exclude '.DS_Store' --exclude '.flox/' --exclude 'node_modules/' --exclude 'out/' --exclude 'dist/' --exclude 'release/' "\$HOME/Desktop/_/" "/Volumes/My Shared Files/workspace/"
 }
 alias rsync-out="rsync_out"
 
