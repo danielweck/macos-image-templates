@@ -495,10 +495,12 @@ script = "${path.root}/zprofile.sh"
 // "rm ~/setup-info-template.json"
 // ]
 // }
-}
+
 
 provisioner "shell" {
 inline = [
 "echo 'source \"$HOME/proxy-do.sh\"' >> \"$HOME/.zprofile\""
 ]
+}
+
 }
