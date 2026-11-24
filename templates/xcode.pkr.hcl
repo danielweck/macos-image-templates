@@ -376,11 +376,7 @@ script = "${path.root}/zprofile.sh"
 // System Settings ----> Privacy & Security
   provisioner "shell" {
     inline = [
-      // Re-enable Gatekeeper
-      "sudo spctl --global-enable",
-      "spctl --status | grep -q 'assessments enabled'",
-      // Disable passwordless sudo
-      "echo admin | sudo -S sh -c \"mkdir -p /etc/sudoers.d/; (rm -f /etc/sudoers.d/admin-nopasswd || true) ; echo '### admin ALL=(ALL) NOPASSWD: ALL' | EDITOR=tee visudo /etc/sudoers.d/admin-nopasswd\"",
+
       "defaults write -g com.apple.swipescrolldirection -bool NO",
       "defaults write com.apple.WindowManager StandardHideWidgets -bool YES",
       "defaults write com.apple.WindowManager StageManagerHideWidgets -bool YES",
@@ -457,7 +453,7 @@ script = "${path.root}/zprofile.sh"
 // Enable AirDrop over Ethernet and on unsupported Macs running Lion
 // defaults write com.apple.NetworkBrowser BrowseAllInterfaces -bool true
 
-      "defaults read com.apple.WindowManager.plist",
+      "defaults read com.apple.WindowManager.plist"
       //"osascript -e \"tell application 'Finder' to set desktop picture to POSIX file '/System/Library/Desktop Pictures/Solid Colors/Black.png'\"",
     ]
   }
@@ -496,10 +492,15 @@ script = "${path.root}/zprofile.sh"
 // ]
 // }
 
-
 provisioner "shell" {
 inline = [
-"echo 'source \"$HOME/proxy-do.sh\"' >> \"$HOME/.zprofile\""
+"echo 'source \"$HOME/proxy-do.sh\"' >> \"$HOME/.zprofile\"",
+
+// Re-enable Gatekeeper
+"sudo spctl --global-enable",
+"spctl --status | grep -q 'assessments enabled'",
+// Disable passwordless sudo
+"echo admin | sudo -S sh -c \"mkdir -p /etc/sudoers.d/; (rm -f /etc/sudoers.d/admin-nopasswd || true) ; echo '### admin ALL=(ALL) NOPASSWD: ALL' | EDITOR=tee visudo /etc/sudoers.d/admin-nopasswd\""
 ]
 }
 

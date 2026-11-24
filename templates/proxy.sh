@@ -3,7 +3,7 @@
 tee -a "$HOME/proxy-do.sh" >/dev/null <<EOF
 #!/bin/sh
 
-if [ "\$TERMINAL" = "Apple_Terminal" ]; then
+if [ "\$TERM_PROGRAM" = "Apple_Terminal" ]; then
     sudo -k security add-trusted-cert -d -p ssl -p basic -k /Library/Keychains/System.keychain "/Volumes/My Shared Files/devbox/credentials-mitm-proxy-container/ca.crt"
     ## sudo -k security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain "/Volumes/My Shared Files/devbox/credentials-mitm-proxy-container/ca.crt"
 fi
@@ -42,7 +42,7 @@ unset NODE_EXTRA_CA_CERTS
 unset NODE_USE_ENV_PROXY
 unset NODE_OPTIONS
 
-if [ "\$TERMINAL" = "Apple_Terminal" ]; then
+if [ "\$TERM_PROGRAM" = "Apple_Terminal" ]; then
     sudo -k security remove-trusted-cert -d "/Volumes/My Shared Files/devbox/credentials-mitm-proxy-container/ca.crt"
 fi
 EOF
