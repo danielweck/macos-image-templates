@@ -3,8 +3,10 @@
 tee -a "$HOME/proxy-do.sh" >/dev/null <<EOF
 #!/bin/sh
 
-sudo -k security add-trusted-cert -d -p ssl -p basic -k /Library/Keychains/System.keychain "/Volumes/My Shared Files/devbox/credentials-mitm-proxy-container/ca.crt"
-## sudo -k security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain "/Volumes/My Shared Files/devbox/credentials-mitm-proxy-container/ca.crt"
+if [ "$TERMINAL" = "Apple_Terminal" ]; then
+    sudo -k security add-trusted-cert -d -p ssl -p basic -k /Library/Keychains/System.keychain "/Volumes/My Shared Files/devbox/credentials-mitm-proxy-container/ca.crt"
+    ## sudo -k security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain "/Volumes/My Shared Files/devbox/credentials-mitm-proxy-container/ca.crt"
+fi
 
 #export CA_CRT="/Volumes/My Shared Files/devbox/credentials-mitm-proxy-container/ca.crt"
 #export SSL_CERT_FILE=\$CA_CRT
@@ -40,5 +42,7 @@ unset NODE_EXTRA_CA_CERTS
 unset NODE_USE_ENV_PROXY
 unset NODE_OPTIONS
 
-sudo -k security remove-trusted-cert -d "/Volumes/My Shared Files/devbox/credentials-mitm-proxy-container/ca.crt"
+if [ "$TERMINAL" = "Apple_Terminal" ]; then
+    sudo -k security remove-trusted-cert -d "/Volumes/My Shared Files/devbox/credentials-mitm-proxy-container/ca.crt"
+fi
 EOF

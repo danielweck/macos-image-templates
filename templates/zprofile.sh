@@ -111,6 +111,8 @@ function sudo_k() {
     sudo -K
 }
 alias sudok="sudo_k"
+
+source "$HOME/proxy-do.sh"
 EOF
 
 source "$HOME/.zprofile"
