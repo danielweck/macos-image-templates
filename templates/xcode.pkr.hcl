@@ -105,13 +105,16 @@ build {
       "  [[ $size_kb -ge $minimum_kb ]] && break",
       "  sleep 2",
       "done",
-      "[[ $size_kb -ge $minimum_kb ]] || { echo 'APFS did not expand to ${var.disk_size} GB within 120 seconds.' >&2; exit 1; }",
-      "${path.root}/zprofile.sh"
+      "[[ $size_kb -ge $minimum_kb ]] || { echo 'APFS did not expand to ${var.disk_size} GB within 120 seconds.' >&2; exit 1; }"
 //      "brew install codex",
 //      "brew install --cask claude-code",
 //      "brew install --cask amazon-q"
     ]
   }
+
+provisioner "shell" {
+script = "${path.root}/zprofile.sh"
+}
 
 //  // Re-install the GitHub Actions runner
 //  provisioner "shell" {
@@ -490,9 +493,7 @@ build {
 // }
 
 provisioner "shell" {
-inline = [
-"${path.root}/proxy.sh",
-]
+script = "${path.root}/proxy.sh"
 }
 
 }
