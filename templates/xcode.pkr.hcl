@@ -11,8 +11,9 @@ packer {
 //  type = string
 //}
 
-variable "SSH_PUB_KEY" {
+variable "ssh_pub_key" {
   type = string
+  default = ""
 }
 
 variable "xcode_version" {
@@ -501,7 +502,7 @@ inline = [
 "echo 'source \"$HOME/proxy-do.sh\"' >> \"$HOME/.zprofile\"",
 "mkdir -p /Users/admin/.ssh || true",
 "touch /Users/admin/.ssh/authorized_keys || true",
-"echo \"${SSH_PUB_KEY}\" >> /Users/admin/.ssh/authorized_keys",
+"echo '${var.ssh_pub_key}' >> /Users/admin/.ssh/authorized_keys",
 "chmod 700 /Users/admin/.ssh",
 "chmod 600 /Users/admin/.ssh/authorized_keys",
 "chown -R admin:staff /Users/admin/.ssh",
