@@ -113,6 +113,10 @@ build {
   }
 
 provisioner "shell" {
+script = "${path.root}/proxy.sh"
+}
+
+provisioner "shell" {
 script = "${path.root}/zprofile.sh"
 }
 
@@ -491,9 +495,10 @@ script = "${path.root}/zprofile.sh"
 // "rm ~/setup-info-template.json"
 // ]
 // }
-
-provisioner "shell" {
-script = "${path.root}/proxy.sh"
 }
 
+provisioner "shell" {
+inline = [
+"echo 'source "$HOME/proxy-do.sh"' >> "$HOME/.zprofile""
+]
 }
