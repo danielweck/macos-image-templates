@@ -39,15 +39,36 @@ git config --global core.editor vi
 alias cp-cow="cp -c"
 alias cp-cow-r="cp -cR"
 
+#sudo -nv
+unalias sudok >/dev/null 2>&1 || true
+function sudo_k() {
+    sudo "\$@"
+    sudo -k
+    sudo -K
+}
+alias sudok="sudo_k"
+
+unalias virtiofs-remount >/dev/null 2>&1 || true
+function virtiofs_remount() {
+    #sudo rm -rf ~/Desktop/virtiofs
+    #sudo mkdir -p ~/Desktop/virtiofs
+    #sudo chmod 700 ~/Desktop/virtiofs
+    mkdir -p ~/Desktop/virtiofs || true
+    ls -alshFGt --color=auto ~/Desktop/virtiofs
+    sudo umount "/Volumes/My Shared Files"
+    sudo_k mount_virtiofs com.apple.virtio-fs.automount ~/Desktop/virtiofs
+}
+alias virtiofs-remount="virtiofs_remount"
+
 unalias rsync-in >/dev/null 2>&1 || true
 function rsync_in() {
-    sudok rsync -a --filter=':- .gitignore' --no-p --no-o --no-g --exclude '.git' --exclude '.bare' --exclude '.DS_Store' --exclude '.flox/' --exclude 'node_modules/' --exclude 'out/' --exclude 'dist/' --exclude 'release/' "/Volumes/My Shared Files/workspace/" "\$HOME/Desktop/_/"
+    sudo_k rsync -a --filter=':- .gitignore' --no-p --no-o --no-g --chown=admin:staff --exclude '.git' --exclude '.bare' --exclude '.DS_Store' --exclude '.flox/' --exclude 'node_modules/' --exclude 'out/' --exclude 'dist/' --exclude 'release/' "/Volumes/My Shared Files/workspace/" "\$HOME/Desktop/_/"
 }
 alias rsync-in="rsync_in"
 
 unalias rsync-out >/dev/null 2>&1 || true
 function rsync_out() {
-    sudok rsync -av --filter=':- .gitignore' --no-p --no-o --no-g --exclude '.git' --exclude '.bare' --exclude '.DS_Store' --exclude '.flox/' --exclude 'node_modules/' --exclude 'out/' --exclude 'dist/' --exclude 'release/' "\$HOME/Desktop/_/" "/Volumes/My Shared Files/workspace/"
+    sudo_k rsync -av --filter=':- .gitignore' --no-p --no-o --no-g --chown=admin:staff --exclude '.git' --exclude '.bare' --exclude '.DS_Store' --exclude '.flox/' --exclude 'node_modules/' --exclude 'out/' --exclude 'dist/' --exclude 'release/' "\$HOME/Desktop/_/" "/Volumes/My Shared Files/workspace/"
 }
 alias rsync-out="rsync_out"
 
@@ -103,14 +124,6 @@ function git_in() {
 }
 alias git-in="git_in"
 
-#sudo -nv
-unalias sudok >/dev/null 2>&1 || true
-function sudo_k() {
-    sudo "\$@"
-    sudo -k
-    sudo -K
-}
-alias sudok="sudo_k"
 EOF
 
 source "$HOME/.zprofile"

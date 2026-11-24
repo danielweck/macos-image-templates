@@ -36,7 +36,7 @@ Assuming TART is already installed, and this file exists: `~/Downloads/Xcode_27.
 * Change photo background to solid color, etc. (...anything not already done with `defaults write` in `xcode.pkr.hcl`)
 * Turn off screen sharing (leave remote SSH access)
 * PROXY SSH TUNNEL: `export PROXY_IP=$(container inspect credentials-mitm-proxy-container | jq -r '.[0].status.networks.[0].ipv4Address' | cut -d'/' -f1) ; ssh -N -R 127.0.0.1:10255:$PROXY_IP:10255 admin@$(tart ip golden-gate-xcode)`
-* `ssh admin@$(tart ip golden-gate-xcode)` (`source ~/.zprofile-proxy` + `source ~/.zprofile-unproxy`)
+* `ssh admin@$(tart ip golden-gate-xcode)`
 
 
 `xcode_components` = `\"MetalToolchain\"`
